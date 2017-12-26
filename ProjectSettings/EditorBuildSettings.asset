@@ -8,3 +8,15 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Resources/Scene/main.unity
     guid: aace336c357b6ce44a61573e9b2feef8
+  - enabled: 1
+    path: Assets/Resources/Scene/Title.unity
+    guid: 4c0a92d5db346054b9e910fe4b7aead4
+  - enabled: 1
+    path: Assets/Resources/Scene/StageSelect.unity
+    guid: bd7661875fad1d540aee3d96d6d2f342
+  - enabled: 1
+    path: Assets/Resources/Scene/Scenario.unity
+    guid: 4c42a4ca01fc1864ab17a0df5ef1ad99
+  - enabled: 1
+    path: Assets/Resources/Scene/Play.unity
+    guid: fc72770cce9419944936b102cb67ab74
