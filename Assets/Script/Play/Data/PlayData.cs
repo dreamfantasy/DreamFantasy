@@ -2,27 +2,46 @@
 using System.Collections.Generic;
 
 public class PlayData : MonoBehaviour { 
-    public GameObject Player;
-    public GameObject Goal  ;
-    public List< GameObject > Wall   = new List< GameObject >( );
-    public List< GameObject > Switch = new List< GameObject >( );
+    public Player _player;
+    public Goal   _goal  ;
+    public List< Wall     > _wall   = new List< Wall    >( );
+    public List< Switch   > _switch = new List< Switch >( );
 
 	public void setActives( bool value ) {
 		//Player
-		if ( Player != null ) {
-			Player.SetActive( value );
+		if ( _player != null ) {
+			_player.gameObject.SetActive( value );
 		}
 		//Goal
-		if ( Goal != null ) {
-			Goal.SetActive( value );
+		if ( _goal != null ) {
+			_goal.gameObject.SetActive( value );
 		}
 		//Wall
-		foreach ( GameObject obj in Wall ) {
-			obj.SetActive( value );
+		foreach ( Wall component in _wall ) {
+			component.gameObject.SetActive( value );
 		}
 		//Switch
-		foreach ( GameObject obj in Switch ) {
-			obj.SetActive( value );
+		foreach ( Switch component in _switch ) {
+			component.gameObject.SetActive( value );
+		}
+	}
+
+	public void reset( ) {
+		//Player
+		if ( _player != null ) {
+			_player.reset( );
+		}
+		//Goal
+		if ( _goal != null ) {
+			_goal.reset( );
+		}
+		//Wall
+		foreach ( Wall component in _wall ) {
+			component.reset( );
+		}
+		//Switch
+		foreach ( Switch component in _switch ) {
+			component.reset( );
 		}
 	}
 }

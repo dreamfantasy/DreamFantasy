@@ -4,9 +4,9 @@ using System.IO;
 
 public class BoardDataManager : MonoBehaviour {
 	public BoardData Data { get; private set; }
-	[Range(0, Play.MAX_STAGE)]
+	[Range(0, Play.MAX_STAGE - 1)]
 	public int Stage = 0;
-	[Range(0, Play.MAX_AREA)]
+	[Range(0, Play.MAX_AREA - 1)]
 	public int Area = 0;
 
 	int asset_stage = 0;
@@ -17,17 +17,22 @@ public class BoardDataManager : MonoBehaviour {
 		if ( Data == null ) {
 			Data = ScriptableObject.CreateInstance< BoardData >( );
 		}
+		string path = getAssetPath( ) + ".asset";
+		if ( File.Exists( path ) ) {
+			return;
+		}
+
 		string dir = getAssetDir( );
 		if ( !Directory.Exists( dir ) ) {
 			Directory.CreateDirectory( dir );
 		}
-		AssetDatabase.CreateAsset( Data, getAssetPath( ) + ".asset" );
+		AssetDatabase.CreateAsset( Data, path );
 		saveTmpData( );
 		Debug.Log( "Assetを生成しました" );
 	}
 
 	public void loadAsset( ) {
-		Data = AssetDatabase.LoadAssetAtPath< BoardData >( getAssetPath( ) + ".asset" );
+		Data = AssetDatabase.LoadAssetAtPath< BoardData >( getAssetPath( ) );
 		if ( Data == null ) {
 			createAsset( );
 		} else {
@@ -35,6 +40,17 @@ public class BoardDataManager : MonoBehaviour {
 			createGameObject( );
 			Debug.Log( "Assetをロードしました" );
 		}
+		saveTmpData( );
+	}
+
+	public void virtualLoadAsset( ) {
+		BoardData tmp = AssetDatabase.LoadAssetAtPath< BoardData >( getAssetPath( ) );
+		tmp._Player   = Data._Player;
+		tmp._Goal     = Data._Goal;
+		tmp._Wall     = Data._Wall;
+		tmp._WallMove = Data._WallMove;
+		tmp._Switch   = Data._Switch;
+		Data = tmp;
 		saveTmpData( );
 	}
 
@@ -46,6 +62,7 @@ public class BoardDataManager : MonoBehaviour {
 		if ( !File.Exists( getAssetPath( ) + ".asset" ) ||
 			  asset_area  != Area ||
 			  asset_stage != Stage ) {
+			//virtualLoadAsset( );
 			createAsset( );
 			return;
 		}
@@ -84,32 +101,36 @@ public class BoardDataManager : MonoBehaviour {
 		{//Player削除
 			string tag = Play.getTag( Play.BOARDOBJECT.PLAYER );
 			GameObject obj = GameObject.FindGameObjectWithTag( tag );
-			Destroy( obj );
+			if ( obj ) {
+				DestroyImmediate( obj );
+			}
 		}
 		{//Goal削除
 			string tag = Play.getTag( Play.BOARDOBJECT.GOAL );
 			GameObject obj = GameObject.FindGameObjectWithTag( tag );
-			Destroy( obj );
+			if ( obj != null ) {
+				DestroyImmediate( obj );
+			}
 		}
 		{//wall削除
 			string tag = Play.getTag( Play.BOARDOBJECT.WALL );
 			GameObject[ ] objects = GameObject.FindGameObjectsWithTag( tag );
 			foreach( GameObject obj in objects ) {
-				Destroy( obj );
+				DestroyImmediate( obj );
 			}
 		}
 		{//wallMove削除
 			string tag = Play.getTag( Play.BOARDOBJECT.WALL_MOVE );
 			GameObject[ ] objects = GameObject.FindGameObjectsWithTag( tag );
 			foreach( GameObject obj in objects ) {
-				Destroy( obj );
+				DestroyImmediate( obj );
 			}
 		}
 		{//switch削除
 			string tag = Play.getTag( Play.BOARDOBJECT.SWITCH );
 			GameObject[ ] objects = GameObject.FindGameObjectsWithTag( tag );
 			foreach( GameObject obj in objects ) {
-				Destroy( obj );
+				DestroyImmediate( obj );
 			}
 		}
 

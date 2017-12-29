@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
-class Goal : MonoBehaviour {
+public class Goal : MonoBehaviour {
+	public bool EnterPlayer { get; private set; }
 	bool enable = false;
 	Switch[ ] switchs;
 
@@ -10,6 +11,10 @@ class Goal : MonoBehaviour {
 		for ( int i = 0; i < objects.Length; i++ ) {
 			switchs[ i ] = objects[ i ].GetComponent< Switch >( );
 		}
+	}
+
+	void Start( ) {
+		EnterPlayer = false;
 	}
 
 	void Update( ) {
@@ -40,5 +45,20 @@ class Goal : MonoBehaviour {
 
 	void setEnable( bool value ) {
 		enable = value;
+	}
+	
+	void OnTriggerEnter2D( Collider2D other ) {
+		if ( !enable ) {
+			return;
+		}
+		if ( other.tag == Play.getTag( Play.BOARDOBJECT.PLAYER ) ) {
+			return;
+		}
+		EnterPlayer = true;
+		other.GetComponent< Rigidbody2D >( ).velocity = Vector3.zero;
+	}
+
+	public void reset( ) {
+		EnterPlayer = false;
 	}
 }
