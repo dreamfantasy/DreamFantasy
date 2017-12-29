@@ -3,7 +3,7 @@
 --- !u!129 &1
 PlayerSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 12
+  serializedVersion: 11
   productGUID: 8cf8a446bd3c26441b9ce311b4a6e211
   AndroidProfiler: 0
   defaultScreenOrientation: 4
@@ -14,7 +14,7 @@ PlayerSettings:
   productName: DreamFantasy
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
-  m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
+  m_SplashScreenBackgroundColor: {r: 0.13333334, g: 0.17254902, b: 0.21176471, a: 1}
   m_ShowUnitySplashScreen: 1
   m_ShowUnitySplashLogo: 1
   m_SplashScreenOverlayOpacity: 1
@@ -70,7 +70,6 @@ PlayerSettings:
   captureSingleScreen: 0
   muteOtherAudioSources: 0
   Prepare IOS For Recording: 0
-  Force IOS Speakers When Recording: 0
   submitAnalytics: 1
   usePlayerLog: 1
   bakeCollisionMeshes: 0
@@ -102,7 +101,6 @@ PlayerSettings:
   xboxOneResolution: 0
   xboxOneMonoLoggingLevel: 0
   xboxOneLoggingLevel: 1
-  xboxOneDisableEsram: 0
   videoMemoryForVertexBuffers: 0
   psp2PowerMode: 0
   psp2AcquireBGM: 1
@@ -138,10 +136,14 @@ PlayerSettings:
       depthFormat: 1
   protectGraphicsMemory: 0
   useHDRDisplay: 0
-  targetPixelDensity: 0
-  resolutionScalingMode: 0
-  applicationIdentifier: {}
-  buildNumber: {}
+  applicationIdentifier:
+    Android: com.Company.ProductName
+    Standalone: unity.DefaultCompany.DreamFantasy
+    Tizen: com.Company.ProductName
+    iOS: com.DF.DreamFantasy
+    tvOS: com.Company.ProductName
+  buildNumber:
+    iOS: 0
   AndroidBundleVersionCode: 1
   AndroidMinSdkVersion: 16
   AndroidTargetSdkVersion: 0
@@ -160,10 +162,10 @@ PlayerSettings:
     serializedVersion: 2
     m_Bits: 238
   iPhoneSdkVersion: 988
-  iOSTargetOSVersionString: 
+  iOSTargetOSVersionString: 6.0
   tvOSSdkVersion: 0
   tvOSRequireExtendedGameController: 0
-  tvOSTargetOSVersionString: 
+  tvOSTargetOSVersionString: 9.0
   uIPrerenderedIcon: 0
   uIRequiresPersistentWiFi: 0
   uIRequiresFullScreen: 1
@@ -208,7 +210,7 @@ PlayerSettings:
   iOSMetalForceHardShadows: 0
   metalEditorSupport: 1
   metalAPIValidation: 1
-  iOSRenderExtraFrameOnPause: 0
+  iOSRenderExtraFrameOnPause: 1
   appleDeveloperTeamID: 
   iOSManualSigningProvisioningProfileID: 
   tvOSManualSigningProvisioningProfileID: 
@@ -321,7 +323,7 @@ PlayerSettings:
   switchAccessibleURLs: 
   switchLegalInformation: 
   switchMainThreadStackSize: 1048576
-  switchPresenceGroupId: 0x01004b9000490000
+  switchPresenceGroupId: 
   switchLogoHandling: 0
   switchReleaseVersion: 0
   switchDisplayVersion: 1.0.0
@@ -333,8 +335,8 @@ PlayerSettings:
   switchUserAccountSaveDataSize: 0
   switchUserAccountSaveDataJournalSize: 0
   switchApplicationAttribute: 0
-  switchCardSpecSize: 4
-  switchCardSpecClock: 25
+  switchCardSpecSize: -1
+  switchCardSpecClock: -1
   switchRatingsMask: 0
   switchRatingsInt_0: 0
   switchRatingsInt_1: 0
@@ -348,7 +350,7 @@ PlayerSettings:
   switchRatingsInt_9: 0
   switchRatingsInt_10: 0
   switchRatingsInt_11: 0
-  switchLocalCommunicationIds_0: 0x01004b9000490000
+  switchLocalCommunicationIds_0: 
   switchLocalCommunicationIds_1: 
   switchLocalCommunicationIds_2: 
   switchLocalCommunicationIds_3: 
@@ -368,6 +370,9 @@ PlayerSettings:
   switchUdpSendBufferSize: 9
   switchUdpReceiveBufferSize: 42
   switchSocketBufferEfficiency: 4
+  switchSocketInitializeEnabled: 1
+  switchNetworkInterfaceManagerInitializeEnabled: 1
+  switchPlayerConnectionEnabled: 1
   ps4NPAgeRating: 12
   ps4NPTitleSecret: 
   ps4NPTrophyPackPath: 
@@ -405,6 +410,7 @@ PlayerSettings:
   ps4GarlicHeapSize: 2048
   ps4ProGarlicHeapSize: 2560
   ps4Passcode: frAQBc8Wsa1xVPfvJcrgRYwTiizs2trQ
+  ps4UseDebugIl2cppLibs: 0
   ps4pnSessions: 1
   ps4pnPresence: 1
   ps4pnFriends: 1
@@ -479,7 +485,7 @@ PlayerSettings:
   psp2UseLibLocation: 0
   psp2InfoBarOnStartup: 0
   psp2InfoBarColor: 0
-  psp2ScriptOptimizationLevel: 0
+  psp2UseDebugIl2cppLibs: 0
   psmSplashimage: {fileID: 0}
   splashScreenBackgroundSourceLandscape: {fileID: 0}
   splashScreenBackgroundSourcePortrait: {fileID: 0}
@@ -497,11 +503,13 @@ PlayerSettings:
   webGLUseWasm: 0
   webGLCompressionFormat: 1
   scriptingDefineSymbols: {}
-  platformArchitecture: {}
-  scriptingBackend: {}
+  platformArchitecture:
+    iOS: 2
+  scriptingBackend:
+    Standalone: 0
+    iOS: 1
   incrementalIl2cppBuild: {}
   additionalIl2CppArgs: 
-  scriptingRuntimeVersion: 0
   apiCompatibilityLevelPerPlatform: {}
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
@@ -584,11 +592,10 @@ PlayerSettings:
       daydreamIconForeground: {fileID: 0}
       daydreamIconBackground: {fileID: 0}
   cloudServicesEnabled: {}
-  facebookSdkVersion: 7.9.4
+  facebookSdkVersion: 7.9.1
   apiCompatibilityLevel: 2
   cloudProjectId: 
   projectName: 
   organizationId: 
   cloudEnabled: 0
-  enableNativePlatformBackendsForNewInputSystem: 0
-  disableOldInputManagerSupport: 0
+  enableNewInputSystem: 0

@@ -2,10 +2,9 @@
 using UnityEngine.SceneManagement;
 
 public class Main : MonoBehaviour {
+	public static bool instance = false;
 	void Awake( ) {
-		gameObject.AddComponent< Device >( );
-		gameObject.AddComponent< Game >( );
-		DontDestroyOnLoad( gameObject );
+		InstanceGame( gameObject );
 	}
 
 	void Start( ) {
@@ -13,5 +12,16 @@ public class Main : MonoBehaviour {
 	}
 	
 	void Update( ) {
+	}
+
+
+	public static void InstanceGame( GameObject obj ) {
+		if ( instance ) {
+			return;
+		}
+		instance = true;
+		obj.AddComponent< Device >( );
+		obj.AddComponent< Game >( );
+		DontDestroyOnLoad( obj );
 	}
 }
