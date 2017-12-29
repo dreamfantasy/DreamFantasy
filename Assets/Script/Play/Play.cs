@@ -29,7 +29,7 @@ public class Play : MonoBehaviour {
 	//-----------変数------------//
 	public STATE state { get; private set; }
 	GameObject[ ] _stock_ui;
-	PlayData[ ] _data;
+	PlayData _data;
 	int _count;
 	int _area;
 	int _stock;
@@ -43,17 +43,20 @@ public class Play : MonoBehaviour {
 			return;
 		}
 		createLimitMoveWall( );
-		loadStageData( );
+		//loadStageData( );
+		loadAreaData( 0 );
 		findStockUI( );
 	}
 
 	void Start( ) {
 		state = STATE.WAIT;
 		_area = 0;
+		_count = 0;
 		_stock = MAX_STOCK;
 	}
 
 	void Update( ) {
+		_count++;
 		switch ( state ) {
 		case STATE.WAIT:
 			if ( Device.getTouchPhase( ) == Device.PHASE.ENDED ) {
@@ -61,10 +64,10 @@ public class Play : MonoBehaviour {
 			}
 			break;
 		case STATE.PLAY:
-			if ( _data[ _area ]._player.isFinished( ) ) {
+			if ( _data._player.GetComponent< Player >( ).isFinished( ) ) {
 				reStart( );
 			}
-			if ( _data[ _area ]._goal.EnterPlayer ) {
+			if ( _data._goal.GetComponent< Goal >( ).EnterPlayer ) {
 				state = STATE.GAME_CLEAR;
 			}
 			break;
@@ -84,51 +87,48 @@ public class Play : MonoBehaviour {
 			state = STATE.GAME_OVER;
 			return;
 		}
-		_data[ _area ].reset( );
+		_data.reset( );
 	}
 
 
 
 	//----------------初期化系統----------------//
-	void loadStageData( ) {
-		_data = new PlayData[ MAX_AREA ];
-		for ( int i = 0; i < MAX_AREA; i++ ) {
-			loadAreaData( i );
-		}
-	}
+	//void loadStageData( ) {
+	//	_data = new PlayData[ MAX_AREA ];
+	//	for ( int i = 0; i < MAX_AREA; i++ ) {
+	//		loadAreaData( i );
+	//	}
+	//}
 
 	void loadAreaData( int area ) {
-		BoardData data = Resources.Load< BoardData >( getDataPath( Game.stage, area ) );
+		_data = new PlayData( );
+		BoardData data = ( BoardData )Resources.Load( getDataPath( Game.stage, area ) );
 		if ( data == null ) {
 			print( "エリアのAssetが存在しません。" );
 			Application.Quit( );
 			return;
 		}
-		{//Player
-			GameObject obj = data.createPlayer( );
-			_data[ area ]._player = obj.GetComponent< Player >( );
-		}
-		{//Goal
-			GameObject obj = data.createGoal( );
-			_data[ area ]._goal = obj.GetComponent< Goal >( );
-		}
+		//Player
+		_data._player = data.createPlayer( );
+		//Goal
+		_data._goal = data.createGoal( );
 		//Wall
 		foreach ( GameObject obj in data.createWalls( ) ) {
-			_data[ area ]._wall.Add( obj.GetComponent< Wall >( ) );
+			_data._wall.Add( obj );
 		}
 		//WallMove
 		foreach ( GameObject obj in data.createWallMoves( ) ) {
-			_data[ area ]._wall.Add( obj.GetComponent< WallMove >( ) );
+			_data._wall.Add( obj );
 		}
 		//Switch
 		foreach ( GameObject obj in data.createSwitchs( ) ) {
-			_data[ area ]._switch.Add( obj.GetComponent< Switch >( ) );
+			_data._switch.Add( obj );
 		}
 
 		if ( area == 0 ) {
-			_data[ area ].setActives( false );
+			_data.setActives( true );
 		} else {
-			_data[ area ].setActives( true );
+			_data.setActives( false );
 		}
 	}
 

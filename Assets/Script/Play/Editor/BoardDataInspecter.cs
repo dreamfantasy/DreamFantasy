@@ -41,7 +41,7 @@ public class BoardDataInspecter : Editor {
 				EditorGUILayout.LabelField( "Switch", label );
 			}
 			//button
-			if ( GUILayout.Button( "Check" ) ) {
+			if ( GUILayout.Button( "更新" ) ) {
 				targetComponent.serchObject( );
 			}
 		}
@@ -53,8 +53,11 @@ public class BoardDataInspecter : Editor {
 		if ( GUILayout.Button( "Create/Load" ) ) {
 			targetComponent.loadAsset( );
 		}
-		if ( GUILayout.Button( "Save" ) ) {
-			targetComponent.saveAsset( );
+		if ( GUILayout.Button( "ReloadObject" ) ) {
+			targetComponent.reloadObject( );
+		}
+		if ( GUILayout.Button( "UnLoad" ) ) {
+			targetComponent.unLoad( );
 		}
 		GUILayout.EndHorizontal( );
 	}

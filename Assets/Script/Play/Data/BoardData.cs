@@ -1,15 +1,21 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
+[System.Serializable]
 public class BoardData : ScriptableObject { 
+	[SerializeField]
     public PlayerData _Player;
+	[SerializeField]
     public GoalData   _Goal  ;
+	[SerializeField]
     public List< WallData     > _Wall     = new List< WallData     >( );
+	[SerializeField]
     public List< WallMoveData > _WallMove = new List< WallMoveData >( );
+	[SerializeField]
     public List< SwitchData   > _Switch   = new List< SwitchData   >( );
 	
 	public void serchBoardObjects( ) {
-		Debug.Log( "serch" );
+		Debug.Log( "Assetを更新しました" );
 		serchPlayer( );
 		serchGoal( );
 		serchWall( );
@@ -179,25 +185,31 @@ public class BoardData : ScriptableObject {
 		return result;
 	}
 
-	public class Trans {
+	[System.Serializable]
+	public class Trans  {
 		public Vector3 pos = new Vector3( );
 		public Quaternion rot = new Quaternion( );
 		public Vector3 scl = new Vector3( );
 	}
 	
+	[System.Serializable]
 	public class PlayerData   : Trans {
 	}
 
+	[System.Serializable]
 	public class GoalData     : Trans {
 	}
 
+	[System.Serializable]
 	public class WallData     : Trans {
 	}
 
+	[System.Serializable]
 	public class WallMoveData : Trans {
 		public WallMove.Option option;
 	}
 
+	[System.Serializable]
 	public class SwitchData   : Trans {
 	}
 }

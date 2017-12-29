@@ -11,3 +11,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6905763cd28f26440b6bac65a81fb0bd, type: 3}
   m_Name: 2
   m_EditorClassIdentifier: 
+  _Player:
+    pos: {x: 0, y: 0, z: 0}
+    rot: {x: 0, y: 0, z: 0, w: 0}
+    scl: {x: 0, y: 0, z: 0}
+  _Goal:
+    pos: {x: 0, y: 0, z: 0}
+    rot: {x: 0, y: 0, z: 0, w: 0}
+    scl: {x: 0, y: 0, z: 0}
+  _Wall: []
+  _WallMove: []
+  _Switch: []

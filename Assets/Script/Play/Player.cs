@@ -5,14 +5,14 @@ using UnityEngine;
 
 public class Player : MonoBehaviour {
 	public Sprite[ ] _sprites;
-	[ Range( 0, 20 ) ]
-	public int MOVE_SPEED = 10;
+	[ Range( 0, 50 ) ]
+	public float MOVE_SPEED = 10;
 	[ Range( 1, 100 ) ]
-	public int MOVE_RANGE = 30;
+	public float MOVE_RANGE = 30;
 	[ Range( 0.1f, 2 ) ]
-	public double MAX_ALLOW_SIZE = 0.5;
+	public float MAX_ALLOW_SIZE = 0.5f;
 	[ Range( 0.0001f, 0.005f ) ]
-	public double ALLOW_SIZE_RATIO = 0.001;
+	public float ALLOW_SIZE_RATIO = 0.001f;
 	
 	enum ACTION {
 		WAIT,
@@ -34,12 +34,16 @@ public class Player : MonoBehaviour {
 	void Awake( ) {
 		_play = GameObject.Find( "Script" ).GetComponent< Play >( );
 		_line = gameObject.AddComponent< LineRenderer >( );//予測線
+		CircleCollider2D col = gameObject.AddComponent< CircleCollider2D >( );
+		col.sharedMaterial = Resources.Load< PhysicsMaterial2D >( "Play/Material/Ref" );
+		col.radius = 82;
 		loadArrow( );
 		addRd( );
 	}
 
 	//初期化処理( Awake後 )
 	void Start( ) {
+		MOVE_SPEED *= 50;
 		_start_pos = transform.position;
 		_allow.transform.localScale = Vector3.zero;
 		_hp = _sprites.Length;
@@ -129,10 +133,10 @@ public class Player : MonoBehaviour {
 				//球が動く範囲の場合
 
 				//矢印のサイズ計算
-				Vector2 size = Vector2.one * vec.magnitude * ( float )ALLOW_SIZE_RATIO;
+				Vector2 size = Vector2.one * vec.magnitude * ALLOW_SIZE_RATIO;
 				if ( size.magnitude > MAX_ALLOW_SIZE ) {
 					//矢印は一定以上の大きさにしない
-					size = size.normalized * ( float )MAX_ALLOW_SIZE;
+					size = size.normalized * MAX_ALLOW_SIZE;
 				}
 				_allow.transform.localScale = size;
 
@@ -172,7 +176,7 @@ public class Player : MonoBehaviour {
 			if ( vec.magnitude > MOVE_RANGE ) {
 				//指の位置が変わってた場合動かす
 				Rigidbody2D rd = GetComponent< Rigidbody2D >( );
-				rd.velocity += vec.normalized * MOVE_SPEED;
+				rd.velocity = vec.normalized * MOVE_SPEED;
 				Action = actOnMove;
 			} else {
 				//指の位置が変わらなかった場合待機状態へ戻る

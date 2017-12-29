@@ -2,46 +2,46 @@
 using System.Collections.Generic;
 
 public class PlayData : MonoBehaviour { 
-    public Player _player;
-    public Goal   _goal  ;
-    public List< Wall     > _wall   = new List< Wall    >( );
-    public List< Switch   > _switch = new List< Switch >( );
+    public GameObject _player;
+    public GameObject   _goal  ;
+    public List< GameObject > _wall   = new List< GameObject >( );
+    public List< GameObject > _switch = new List< GameObject >( );
 
 	public void setActives( bool value ) {
 		//Player
 		if ( _player != null ) {
-			_player.gameObject.SetActive( value );
+			_player.SetActive( value );
 		}
 		//Goal
 		if ( _goal != null ) {
-			_goal.gameObject.SetActive( value );
+			_goal.SetActive( value );
 		}
 		//Wall
-		foreach ( Wall component in _wall ) {
-			component.gameObject.SetActive( value );
+		foreach ( GameObject component in _wall ) {
+			component.SetActive( value );
 		}
 		//Switch
-		foreach ( Switch component in _switch ) {
-			component.gameObject.SetActive( value );
+		foreach ( GameObject component in _switch ) {
+			component.SetActive( value );
 		}
 	}
 
 	public void reset( ) {
 		//Player
 		if ( _player != null ) {
-			_player.reset( );
+			_player.GetComponent< Player >( ).reset( );
 		}
 		//Goal
 		if ( _goal != null ) {
-			_goal.reset( );
+			_goal.GetComponent< Goal >( ).reset( );
 		}
 		//Wall
-		foreach ( Wall component in _wall ) {
-			component.reset( );
+		foreach ( GameObject component in _wall ) {
+			component.GetComponent< Wall >( ).reset( );
 		}
 		//Switch
-		foreach ( Switch component in _switch ) {
-			component.reset( );
+		foreach ( GameObject component in _switch ) {
+			component.GetComponent< Switch >( ).reset( );
 		}
 	}
 }

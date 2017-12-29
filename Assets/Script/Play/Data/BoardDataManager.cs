@@ -3,6 +3,7 @@ using UnityEditor;
 using System.IO;
 
 public class BoardDataManager : MonoBehaviour {
+	[SerializeField]
 	public BoardData Data { get; private set; }
 	[Range(0, Play.MAX_STAGE - 1)]
 	public int Stage = 0;
@@ -13,60 +14,53 @@ public class BoardDataManager : MonoBehaviour {
 	int asset_area  = 0;
 
 #if UNITY_EDITOR
+	//-------------------コマンド-------------------------//
 	void createAsset( ) {
 		if ( Data == null ) {
 			Data = ScriptableObject.CreateInstance< BoardData >( );
-		}
-		string path = getAssetPath( ) + ".asset";
-		if ( File.Exists( path ) ) {
-			return;
 		}
 
 		string dir = getAssetDir( );
 		if ( !Directory.Exists( dir ) ) {
 			Directory.CreateDirectory( dir );
 		}
+
+		string path = getAssetPath( );
 		AssetDatabase.CreateAsset( Data, path );
-		saveTmpData( );
+		AssetDatabase.Refresh( );
 		Debug.Log( "Assetを生成しました" );
+		saveTmpData( );
 	}
 
 	public void loadAsset( ) {
 		Data = AssetDatabase.LoadAssetAtPath< BoardData >( getAssetPath( ) );
+		AssetDatabase.Refresh( );
 		if ( Data == null ) {
 			createAsset( );
 		} else {
-			eraseGameObject( );
-			createGameObject( );
 			Debug.Log( "Assetをロードしました" );
+			saveTmpData( );
 		}
-		saveTmpData( );
 	}
 
-	public void virtualLoadAsset( ) {
-		BoardData tmp = AssetDatabase.LoadAssetAtPath< BoardData >( getAssetPath( ) );
-		tmp._Player   = Data._Player;
-		tmp._Goal     = Data._Goal;
-		tmp._Wall     = Data._Wall;
-		tmp._WallMove = Data._WallMove;
-		tmp._Switch   = Data._Switch;
-		Data = tmp;
-		saveTmpData( );
+	public void reloadObject( ) {
+		eraseGameObject( );
+		createGameObject( );
 	}
 
-	public void saveAsset( ) {
-		if ( Data == null ) {
-			return;
+	public void unLoad( ) {
+		Data = null;
+	}
+	
+	//--------------------------------------------------//
+
+	bool isCopy( ) {
+		bool result = true;
+		if ( asset_area  == Area &&
+			 asset_stage == Stage ) {
+			result = false;
 		}
-		Debug.Log( "Assetを保存しました" );
-		if ( !File.Exists( getAssetPath( ) + ".asset" ) ||
-			  asset_area  != Area ||
-			  asset_stage != Stage ) {
-			//virtualLoadAsset( );
-			createAsset( );
-			return;
-		}
-		AssetDatabase.SaveAssets( );
+		return result;
 	}
 
 	public void serchObject( ) {
@@ -77,7 +71,7 @@ public class BoardDataManager : MonoBehaviour {
 	}
 
 	string getAssetPath( ) {
-		return "Assets/Resources/" + Play.getDataPath( Stage, Area );
+		return "Assets/Resources/" + Play.getDataPath( Stage, Area ) + ".asset";
 	}
 
 	string getAssetDir( ) {
