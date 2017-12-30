@@ -1,46 +1,47 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class PlayData : MonoBehaviour { 
-    public GameObject _player;
-    public GameObject   _goal  ;
-    public List< GameObject > _wall   = new List< GameObject >( );
-    public List< GameObject > _switch = new List< GameObject >( );
+public class PlayData { 
+    public GameObject player { get; set; }
+    public GameObject goal   { get; set; }
+    public GameObject[ ] walls   { get; set; }
+    public GameObject[ ] switchs { get; set; }
+
 
 	public void setActives( bool value ) {
 		//Player
-		if ( _player != null ) {
-			_player.SetActive( value );
+		if ( player != null ) {
+			player.SetActive( value );
 		}
 		//Goal
-		if ( _goal != null ) {
-			_goal.SetActive( value );
+		if ( goal != null ) {
+			goal.SetActive( value );
 		}
 		//Wall
-		foreach ( GameObject component in _wall ) {
+		foreach ( GameObject component in walls ) {
 			component.SetActive( value );
 		}
 		//Switch
-		foreach ( GameObject component in _switch ) {
+		foreach ( GameObject component in switchs ) {
 			component.SetActive( value );
 		}
 	}
 
 	public void reset( ) {
 		//Player
-		if ( _player != null ) {
-			_player.GetComponent< Player >( ).reset( );
+		if ( player != null ) {
+			player.GetComponent< Player >( ).reset( );
 		}
 		//Goal
-		if ( _goal != null ) {
-			_goal.GetComponent< Goal >( ).reset( );
+		if ( goal != null ) {
+			goal.GetComponent< Goal >( ).reset( );
 		}
 		//Wall
-		foreach ( GameObject component in _wall ) {
+		foreach ( GameObject component in walls ) {
 			component.GetComponent< Wall >( ).reset( );
 		}
 		//Switch
-		foreach ( GameObject component in _switch ) {
+		foreach ( GameObject component in switchs ) {
 			component.GetComponent< Switch >( ).reset( );
 		}
 	}

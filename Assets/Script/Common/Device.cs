@@ -11,13 +11,17 @@ public class Device : MonoBehaviour {
 		NONE		//なし
 	};
 
+	public static Device Instanse { get; private set; }
+	public Vector2 Pos  { get; private set; }
+	public PHASE Phase { get; private set; }
+
 	System.Action checkPos;
 	System.Action checkTouchPhase;
-	static Vector2 _pos;
-	static PHASE _phase;
-	static int _stop_count;
+
+	int _stop_count;
 
 	void Awake( ) {
+		Instanse = this;
 		StopLittle( 30 );
 		if ( isTouchDevice( ) ) {
 			checkPos = checkPosTouch;
@@ -37,17 +41,10 @@ public class Device : MonoBehaviour {
 		checkTouchPhase( );
 	}
 
-	public static void StopLittle( int count ) {
+
+	public void StopLittle( int count ) {
 		_stop_count = count;
-		_phase = PHASE.NONE;
-	}
-
-	public static Vector2 getPos( ) {
-		return _pos;
-	}
-
-	public static PHASE getTouchPhase( ) {
-		return _phase;
+		Phase = PHASE.NONE;
 	}
 
 	bool isTouchDevice( ) {
@@ -55,42 +52,53 @@ public class Device : MonoBehaviour {
 	}
 
 	void checkPosTouch( ) {
-		_pos = Input.GetTouch( 0 ).position;
+		Vector3 tmp = Input.GetTouch( 0 ).position;
+		// Z軸修正
+		tmp.z = 10f;
+		// マウス位置座標をスクリーン座標からワールド座標に変換する
+		tmp = Camera.main.ScreenToWorldPoint( tmp );
+		Pos = tmp;
 	}
 
 	void checkPosMouse( ) {
-		_pos = Input.mousePosition;
+		Vector3 tmp = Input.mousePosition;
+		// Z軸修正
+		tmp.z = 10f;
+		// マウス位置座標をスクリーン座標からワールド座標に変換する
+		Camera camera = GameObject.FindGameObjectWithTag( "MainCamera" ).GetComponent< Camera >( );
+		tmp = camera.ScreenToWorldPoint( tmp );
+		Pos = tmp;
 	}
 
 	void checkTouchPhaseTouch( ) {
 		switch ( Input.GetTouch( 0 ).phase ) {
 		case TouchPhase.Began:
-			_phase = PHASE.BEGAN;
+			Phase = PHASE.BEGAN;
 			break;
 		case TouchPhase.Moved:
-			_phase = PHASE.MOVED;
+			Phase = PHASE.MOVED;
 			break;
 		case TouchPhase.Stationary:
-			_phase = PHASE.MOVED;
+			Phase = PHASE.MOVED;
 			break;
 		case TouchPhase.Ended:
-			_phase = PHASE.ENDED;
+			Phase = PHASE.ENDED;
 			break;
 		case TouchPhase.Canceled:
-			_phase = PHASE.CANCELED;
+			Phase = PHASE.CANCELED;
 			break;
 		}
 	}
 
 	void checkTouchPhaseMouse( ) {
 		if ( Input.GetMouseButton( 0 ) ) {
-			_phase = PHASE.MOVED;
+			Phase = PHASE.MOVED;
 		}
 		if ( Input.GetMouseButtonDown( 0 ) ) {
-			_phase = PHASE.BEGAN;
+			Phase = PHASE.BEGAN;
 		}
 		if ( Input.GetMouseButtonUp( 0 ) ) {
-			_phase = PHASE.ENDED;
+			Phase = PHASE.ENDED;
 		}
 		   
 	}

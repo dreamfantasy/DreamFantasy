@@ -51,7 +51,7 @@ public class Goal : MonoBehaviour {
 		if ( !enable ) {
 			return;
 		}
-		if ( other.tag == Play.getTag( Play.BOARDOBJECT.PLAYER ) ) {
+		if ( other.tag != Play.getTag( Play.BOARDOBJECT.PLAYER ) ) {
 			return;
 		}
 		EnterPlayer = true;

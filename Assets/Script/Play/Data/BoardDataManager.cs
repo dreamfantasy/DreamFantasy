@@ -4,86 +4,93 @@ using System.IO;
 
 public class BoardDataManager : MonoBehaviour {
 	[SerializeField]
-	public BoardData Data { get; private set; }
+	public BoardData Data;
 	[Range(0, Play.MAX_STAGE - 1)]
 	public int Stage = 0;
 	[Range(0, Play.MAX_AREA - 1)]
 	public int Area = 0;
-
-	int asset_stage = 0;
-	int asset_area  = 0;
+	public bool Tutorial = false;
 
 #if UNITY_EDITOR
 	//-------------------コマンド-------------------------//
-	void createAsset( ) {
-		if ( Data == null ) {
-			Data = ScriptableObject.CreateInstance< BoardData >( );
-		}
 
+
+	void createAsset( ) {
 		string dir = getAssetDir( );
 		if ( !Directory.Exists( dir ) ) {
 			Directory.CreateDirectory( dir );
 		}
 
-		string path = getAssetPath( );
-		AssetDatabase.CreateAsset( Data, path );
-		AssetDatabase.Refresh( );
-		Debug.Log( "Assetを生成しました" );
-		saveTmpData( );
+		BoardData asset = ScriptableObject.CreateInstance< BoardData >( );
+		copy( Data, asset );
+		AssetDatabase.CreateAsset( asset, getAssetPath( ) );
 	}
 
 	public void loadAsset( ) {
-		Data = AssetDatabase.LoadAssetAtPath< BoardData >( getAssetPath( ) );
-		AssetDatabase.Refresh( );
-		if ( Data == null ) {
-			createAsset( );
-		} else {
-			Debug.Log( "Assetをロードしました" );
-			saveTmpData( );
+		BoardData asset = AssetDatabase.LoadAssetAtPath< BoardData >( getAssetPath( ) );
+		if ( asset == null ) {
+			return;
 		}
-	}
-
-	public void reloadObject( ) {
+		copy( asset, Data );
 		eraseGameObject( );
 		createGameObject( );
+		Debug.Log( "Assetをロードしました" );
 	}
 
-	public void unLoad( ) {
-		Data = null;
-	}
-	
-	//--------------------------------------------------//
-
-	bool isCopy( ) {
-		bool result = true;
-		if ( asset_area  == Area &&
-			 asset_stage == Stage ) {
-			result = false;
+	public void saveAsset( ) {
+		string path = getAssetPath( );
+		if ( !File.Exists( getAssetPath( ) ) ) {
+			//ファイルがない場合は生成
+			createAsset( );
+			Debug.Log( "Assetを生成/保存しました" );
+			return;
 		}
-		return result;
+		BoardData asset = AssetDatabase.LoadAssetAtPath< BoardData >( path );
+		if ( asset == null ) {
+			AssetDatabase.DeleteAsset( path );
+			saveAsset( );
+			return;
+		}
+		copy( Data, asset );
+		AssetDatabase.SaveAssets( );
+		Debug.Log( "Assetをセーブしました" );
 	}
 
 	public void serchObject( ) {
-		if ( Data == null ) {
-			return;
-		}
 		Data.serchBoardObjects( );
 	}
+	
+	//--------------------------------------------------//
+	public void init( ) {
+		Data = new BoardData( );
+	}
+
+	void copy( BoardData from, BoardData to ) {
+		to._Bg = from._Bg;
+		to._Player = from._Player;
+		to._Goal = from._Goal;
+		to._Wall = from._Wall;
+		to._WallMove = from._WallMove;
+		to._Switch = from._Switch;
+	}
+
 
 	string getAssetPath( ) {
+		if ( Tutorial ) {
+			return "Assets/Resources/" + Play.getDataTutorialPath( Area ) + ".asset";
+		}
 		return "Assets/Resources/" + Play.getDataPath( Stage, Area ) + ".asset";
 	}
 
 	string getAssetDir( ) {
+		if ( Tutorial ) {
+			return "Assets/Resources/" + Play.getDataTutorialDir( );
+		}
 		return "Assets/Resources/" + Play.getDataDir( Stage );
 	}
 
-	void saveTmpData( ) {
-		asset_stage = Stage;
-		asset_area = Area;
-	}
-
 	void createGameObject( ) {
+		Data.createBg( );
 		Data.createPlayer( );
 		Data.createGoal( );
 		Data.createWalls( );
@@ -92,6 +99,13 @@ public class BoardDataManager : MonoBehaviour {
 	}
 
 	void eraseGameObject( ) {
+		{//BG削除
+			string tag = Play.getTag( Play.BOARDOBJECT.BG );
+			GameObject obj = GameObject.FindGameObjectWithTag( tag );
+			if ( obj ) {
+				DestroyImmediate( obj );
+			}
+		}
 		{//Player削除
 			string tag = Play.getTag( Play.BOARDOBJECT.PLAYER );
 			GameObject obj = GameObject.FindGameObjectWithTag( tag );

@@ -9,11 +9,12 @@ public class Game : MonoBehaviour {
 		SCENE_PLAY,
 		MAX_SCENE
 	};
-	public static int chapter     { get; set; }
-	public static int stage       { get; set; }
-	public static int stock       { get; set; }
-	public static int clear_stage { get; set; }
-	public static bool tutorial   { get; set; }
+	public int chapter     { get; set; }
+	public int stage       { get; set; }
+	public int stock       { get; set; }
+	public int clear_stage { get; set; }
+	public bool tutorial   { get; set; }
+	public static Game Instance { get; private set; }
 	const int MAX_LOAD_STAGE = 5;
 	string[ ] KEY = new string[ MAX_LOAD_STAGE ] {
 		"0",
@@ -25,6 +26,7 @@ public class Game : MonoBehaviour {
 	//----------関数------------//
 	void Awake( ) {	
 		reset( );
+		Instance = this;
 	}
 	void Start ( ) { }
 
@@ -39,8 +41,8 @@ public class Game : MonoBehaviour {
 		}
 	}
 
-	public static void loadScene( SCENE scene ) {
-		Device.StopLittle( 30 );
+	public void loadScene( SCENE scene ) {
+		Device.Instanse.StopLittle( 30 );
 		switch ( scene ) {
 		case SCENE.SCENE_TITLE:
 			SceneManager.LoadScene( "Title" );
@@ -57,15 +59,11 @@ public class Game : MonoBehaviour {
 		}
 	}
 
-	public static void reset( ) {
+	public void reset( ) {
 		stock = 0;
 		stage = 0;
 		chapter = 0;
 		clear_stage = -1;
 		tutorial = true; 
-	}
-
-	public static void DeviceStopLittele( int count ) {
-		Device.StopLittle( count );
 	}
 }

@@ -12,7 +12,7 @@ public class BoardDataInspecter : Editor {
 
 		{//label
 			string label = "( none )  [Create/Load]してください";
-			if ( targetComponent.Data ) {
+			if ( targetComponent.Data != null ) {
 				label = "BoardData" + targetComponent.Data.ToString( );
 			}
 			EditorGUILayout.LabelField( "Data", label );
@@ -50,14 +50,15 @@ public class BoardDataInspecter : Editor {
 
 		GUILayout.BeginHorizontal( );
 		//button
-		if ( GUILayout.Button( "Create/Load" ) ) {
+		if ( GUILayout.Button( "Init" ) ) {
+			targetComponent.init( );
+		}
+		if ( GUILayout.Button( "Load" ) ) {
 			targetComponent.loadAsset( );
 		}
-		if ( GUILayout.Button( "ReloadObject" ) ) {
-			targetComponent.reloadObject( );
-		}
-		if ( GUILayout.Button( "UnLoad" ) ) {
-			targetComponent.unLoad( );
+		if ( GUILayout.Button( "Save" ) ) {
+			targetComponent.serchObject( );
+			targetComponent.saveAsset( );
 		}
 		GUILayout.EndHorizontal( );
 	}

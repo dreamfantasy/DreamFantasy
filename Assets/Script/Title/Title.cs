@@ -35,7 +35,7 @@ public class Title : MonoBehaviour {
 
 		if ( _movie_tex.isPlaying ) {
 			//タッチで動画を止める
-			if ( Device.getTouchPhase( ) == Device.PHASE.ENDED ) {
+			if ( Device.Instanse.Phase == Device.PHASE.ENDED ) {
 				stopMovie( );
 			}
 		} else {
@@ -44,8 +44,8 @@ public class Title : MonoBehaviour {
 				playMovie( );
 			}
 			//タッチで次のシーン
-			if ( Device.getTouchPhase( ) == Device.PHASE.ENDED ) {
-				Game.loadScene( Game.SCENE.SCENE_STAGESELECT );
+			if ( Device.Instanse.Phase == Device.PHASE.ENDED ) {
+				Game.Instance.loadScene( Game.SCENE.SCENE_STAGESELECT );
 			}
 		}
 		_count++;

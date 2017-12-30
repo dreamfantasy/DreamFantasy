@@ -9,7 +9,6 @@ public class StageSelect : MonoBehaviour {
 	GameObject _chara;
 	GameObject[ ] _buttons;
 	int _target;
-	bool _move;
 
 	void Awake( ) {
 		_chara = GameObject.Find( "Character" );
@@ -35,7 +34,7 @@ public class StageSelect : MonoBehaviour {
 			_chara.transform.position = _buttons[ stage ].transform.position + _chara_foot;
 			return;
 		}
-		Game.stage = stage;
-		Game.loadScene( Game.SCENE.SCENE_SCENARIO );
+		Game.Instance.stage = stage;
+		Game.Instance.loadScene( Game.SCENE.SCENE_SCENARIO );
 	}
 }

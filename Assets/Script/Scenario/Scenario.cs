@@ -32,22 +32,22 @@ public class Scenario : MonoBehaviour {
 	}
 
 	void Update( ) {
-		if ( Device.getTouchPhase( ) == Device.PHASE.ENDED ) {
+		if ( Device.Instanse.Phase == Device.PHASE.ENDED ) {
 			print( "touch" );
 			_line++;
 			if ( _line >= _data.Length ) {
-				Game.loadScene( Game.SCENE.SCENE_PLAY );
+				Game.Instance.loadScene( Game.SCENE.SCENE_PLAY );
 				return;
 			}
 			setData( );
-			Game.DeviceStopLittele( 3 );
+			Device.Instanse.StopLittle( 3 );
 		}
 	}
 
 	void loadData( ) {
 		TextAsset text = Resources.Load( "Scenario/Story/" +
-			Game.chapter.ToString( ) + "/" +
-			Game.stage.ToString( ) ) as TextAsset;
+			Game.Instance.chapter.ToString( ) + "/" +
+			Game.Instance.stage.ToString( ) ) as TextAsset;
 		if ( !text ) {
 			print( "シナリオがありません\n" );
 			return;

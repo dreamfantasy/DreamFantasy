@@ -21,29 +21,28 @@ public class Player : MonoBehaviour {
 		STRETCH,
 		NONE,
 	};
-	LineRenderer _line;
 	GameObject _allow;
+	GameObject _line;
 	Vector2 _touch_start_pos;
 	Vector3 _start_pos;
 	System.Action Action;
 	Play _play;
 	int _hp;
+	bool _col = false;
 
 
 	//初期化処理( Start前 )
 	void Awake( ) {
 		_play = GameObject.Find( "Script" ).GetComponent< Play >( );
-		_line = gameObject.AddComponent< LineRenderer >( );//予測線
-		CircleCollider2D col = gameObject.AddComponent< CircleCollider2D >( );
-		col.sharedMaterial = Resources.Load< PhysicsMaterial2D >( "Play/Material/Ref" );
-		col.radius = 82;
-		loadArrow( );
+		loadArrow( ); //矢印
+		loadLine( );  //予測線
+		addCol( );
 		addRd( );
+		MOVE_SPEED *= 50;
 	}
 
 	//初期化処理( Awake後 )
 	void Start( ) {
-		MOVE_SPEED *= 50;
 		_start_pos = transform.position;
 		_allow.transform.localScale = Vector3.zero;
 		_hp = _sprites.Length;
@@ -54,12 +53,42 @@ public class Player : MonoBehaviour {
 	//更新処理
 	void Update( ) {
 		Action( );
+		_col = false;
 	}
+
+	
+	void OnCollisionEnter2D( Collision2D collision ) {
+		if ( _col ) {
+			return;
+		}
+		_col = true;
+		damage( );
+	}
+
 
 	//Allowのプレハブを読み込む
 	void loadArrow( ) {
-		_allow = Resources.Load( "Play/Prefab/Allow" ) as GameObject;
+		_allow = Resources.Load( Play.getPrefabDir( ) + "/Allow" ) as GameObject;
+		_allow = Instantiate( _allow );
 		_allow.transform.position = Vector3.zero;
+		_allow.transform.parent = gameObject.transform;
+	}
+
+	//予測線のプレハブ
+	void loadLine( ) {
+		_line = Resources.Load( Play.getPrefabDir( ) + "/Line" ) as GameObject;
+		_line = Instantiate( _line );
+		_line.transform.parent = gameObject.transform;
+		_line.transform.position = Vector3.zero;
+		_line.SetActive( false );
+	}
+
+
+	//Colliderを追加する
+	void addCol( ) {
+		CircleCollider2D col = gameObject.AddComponent< CircleCollider2D >( );
+		col.sharedMaterial = Resources.Load< PhysicsMaterial2D >( "Play/Material/Ref" );
+		col.radius = 82;
 	}
 
 	//RigidBodyを追加する
@@ -67,6 +96,10 @@ public class Player : MonoBehaviour {
 		Rigidbody2D rd = gameObject.AddComponent< Rigidbody2D >( );
 		rd.freezeRotation = true;
 		rd.gravityScale = 0.0f;
+		rd.useAutoMass = false;
+		rd.mass = 0.0f;
+		rd.drag = 0.0f;
+		rd.angularDrag = 0.0f;
 	}
 
 	//速度を一定にする
@@ -75,30 +108,17 @@ public class Player : MonoBehaviour {
 		rd.velocity = rd.velocity.normalized * MOVE_SPEED;
 	}
 
-	//線の設定
-	void initLine( ) {
-		//マテリアル
-		_line.material = new Material( Shader.Find("Unlit/Color") );
-		_line.material.color = new Color( 1.0f, 0, 0, 0.2f );
-		//線の幅
-		_line.startWidth = 0.02f;
-		_line.endWidth   = 0.02f;
-	}
-
-	//線の位置を初期化
-	void resetLine( ) {
-		Vector3[ ] positions = { };
-		_line.SetPositions( positions );
-	}
-
 	//壁などによるダメージ
 	void damage( ) {
 		_hp--;
 		if ( _hp <= 0 ) {
 			_hp = 0;
+			gameObject.GetComponent< Rigidbody2D >( ).velocity = Vector2.zero;
+			return;
 		}
 		GetComponent< SpriteRenderer >( ).sprite = _sprites[ _hp - 1 ];//画像入れ替え
 	}
+
 	
 	
 	//--------------------------public---------------------------//
@@ -108,6 +128,7 @@ public class Player : MonoBehaviour {
 
 	public void reset( ) {
 		transform.position = _start_pos;
+		GetComponent< Rigidbody2D >( ).velocity = Vector2.zero;
 		Start( );
 	}
 	//-----------------------------------------------------------//
@@ -119,18 +140,21 @@ public class Player : MonoBehaviour {
 		}
 	}
 	void actOnTouchWait( ) {
-		if ( Device.getTouchPhase( ) == Device.PHASE.BEGAN ) {
-			_touch_start_pos = Device.getPos( );
+		if ( Device.Instanse.Phase == Device.PHASE.BEGAN ) {
+			_touch_start_pos = Device.Instanse.Pos;
 			Action = actOnStretch;
 		}
 	}
 	void actOnStretch( ) {
-		Vector2 vec = _touch_start_pos - Device.getPos( );
+		Vector2 vec = _touch_start_pos - Device.Instanse.Pos;
 
-		if ( Device.getTouchPhase( ) == Device.PHASE.MOVED ) {
+		if ( Device.Instanse.Phase == Device.PHASE.MOVED ) {
 			//指を動かしているとき
 			if ( vec.magnitude > MOVE_RANGE ) {
 				//球が動く範囲の場合
+				if ( !_line.activeSelf ) {
+					_line.SetActive( true );
+				}
 
 				//矢印のサイズ計算
 				Vector2 size = Vector2.one * vec.magnitude * ALLOW_SIZE_RATIO;
@@ -145,18 +169,7 @@ public class Player : MonoBehaviour {
 				Vector3 axis = Vector3.Cross( Vector3.up, vec );
 				Quaternion rot = Quaternion.AngleAxis( angle, axis );
 				_allow.transform.localRotation = rot;
-
-				//線描画
-				_line = gameObject.GetComponent< LineRenderer >( );
-				Vector3 add1 = vec.normalized * 0.5f;
-				Vector3 add2 = vec.normalized * 100.0f;
-				Vector3 [ ] positions = {
-					transform.position + add1,
-					transform.position + add2
-				};
-				positions[ 0 ].z = -1.0f;
-				positions[ 1 ].z = -1.0f;
-				_line.SetPositions( positions );
+				_line.transform.localRotation = rot;
 			} else {
 				//球が動かない範囲の場合
 
@@ -165,13 +178,13 @@ public class Player : MonoBehaviour {
 			}
 		}
 
-		if ( Device.getTouchPhase( ) == Device.PHASE.ENDED ) {
+		if ( Device.Instanse.Phase == Device.PHASE.ENDED ) {
 			//指を離したとき
 
 			//矢印を見えなくする
 			_allow.transform.localScale = Vector3.zero;
 			//線を見えなくする
-			resetLine( );
+			_line.SetActive( false );
 
 			if ( vec.magnitude > MOVE_RANGE ) {
 				//指の位置が変わってた場合動かす

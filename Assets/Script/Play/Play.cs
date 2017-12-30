@@ -1,9 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Play : MonoBehaviour {
 	public enum BOARDOBJECT {
+		BG,
 		PLAYER,
 		GOAL,
 		SWITCH,
@@ -29,6 +31,8 @@ public class Play : MonoBehaviour {
 	//-----------変数------------//
 	public STATE state { get; private set; }
 	GameObject[ ] _stock_ui;
+	GameObject _clear_ui;
+	GameObject _area_txt_ui;
 	PlayData _data;
 	int _count;
 	int _area;
@@ -42,10 +46,12 @@ public class Play : MonoBehaviour {
 		if ( !Main.instance ) {
 			return;
 		}
+		setRetireButton( );
 		createLimitMoveWall( );
-		//loadStageData( );
 		loadAreaData( 0 );
 		findStockUI( );
+		findGameClearUI( );
+		findAreaTxtUI( );
 	}
 
 	void Start( ) {
@@ -59,23 +65,46 @@ public class Play : MonoBehaviour {
 		_count++;
 		switch ( state ) {
 		case STATE.WAIT:
-			if ( Device.getTouchPhase( ) == Device.PHASE.ENDED ) {
+			if ( !_area_txt_ui.activeSelf ) {
+				//エリア3/3を表示させる
+				_area_txt_ui.SetActive( true );
+				_area_txt_ui.GetComponent< Text >( ).text = getAreaString( );
+			}
+			if ( Device.Instanse.Phase == Device.PHASE.ENDED ) {
+				//プレイヤーが操作できる状態に以降
+				Vector2 tmp = Device.Instanse.Pos;
+				_area_txt_ui.SetActive( false );
 				state = STATE.PLAY;
 			}
 			break;
 		case STATE.PLAY:
-			if ( _data._player.GetComponent< Player >( ).isFinished( ) ) {
+			//プレイヤーが死亡
+			if ( _data.player.GetComponent< Player >( ).isFinished( ) ) {
 				reStart( );
 			}
-			if ( _data._goal.GetComponent< Goal >( ).EnterPlayer ) {
-				state = STATE.GAME_CLEAR;
+			//プレイヤーがゴールに行った
+			if ( _data.goal.GetComponent< Goal >( ).EnterPlayer ) {
+				state = STATE.STAGE_CLEAR;
 			}
 			break;
 		case STATE.STAGE_CLEAR:
+			//次のエリアを読み込み
+			state = STATE.WAIT;
+			_area++;
+			loadAreaData( _area );
 			break;
 		case STATE.GAME_CLEAR:
+			if ( !_clear_ui.activeSelf ) {
+				_clear_ui.SetActive( true );
+			}
+			if ( Device.Instanse.Phase == Device.PHASE.ENDED ) {
+				Game.Instance.loadScene( Game.SCENE.SCENE_STAGESELECT );
+			}
 			break;
 		case STATE.GAME_OVER:
+			if ( Device.Instanse.Phase == Device.PHASE.ENDED ) {
+				Game.Instance.loadScene( Game.SCENE.SCENE_STAGESELECT );
+			}
 			break;
 		}
 	}
@@ -87,48 +116,88 @@ public class Play : MonoBehaviour {
 			state = STATE.GAME_OVER;
 			return;
 		}
+		for ( int i = 0; i < MAX_STOCK; i++ ) {
+			if ( _stock <= i ) {
+				_stock_ui[ i ].SetActive( false );
+			}
+		}
 		_data.reset( );
 	}
 
+	void retire( ) {
+		Game.Instance.loadScene( Game.SCENE.SCENE_STAGESELECT );
+	}
 
+	string getAreaString( ) {
+		return "Area " + ( _area + 1 ).ToString( ) + "/" + MAX_AREA.ToString( );
+	}
 
 	//----------------初期化系統----------------//
-	//void loadStageData( ) {
-	//	_data = new PlayData[ MAX_AREA ];
-	//	for ( int i = 0; i < MAX_AREA; i++ ) {
-	//		loadAreaData( i );
-	//	}
-	//}
 
 	void loadAreaData( int area ) {
+		destroyArea( );
+		if ( area >= MAX_AREA ) {
+			state = STATE.GAME_CLEAR;
+			return;
+		}
 		_data = new PlayData( );
-		BoardData data = ( BoardData )Resources.Load( getDataPath( Game.stage, area ) );
+		BoardData data = ( BoardData )Resources.Load( getDataPath( Game.Instance.stage, area ) );
 		if ( data == null ) {
 			print( "エリアのAssetが存在しません。" );
 			Application.Quit( );
 			return;
 		}
-		//Player
-		_data._player = data.createPlayer( );
+		//----描画順に読み込む----//
+		//Bg( 代入しない )
+		data.createBg( );
 		//Goal
-		_data._goal = data.createGoal( );
+		_data.goal = data.createGoal( );
 		//Wall
-		foreach ( GameObject obj in data.createWalls( ) ) {
-			_data._wall.Add( obj );
-		}
 		//WallMove
-		foreach ( GameObject obj in data.createWallMoves( ) ) {
-			_data._wall.Add( obj );
+		GameObject[ ] tmp1 = data.createWalls( );
+		GameObject[ ] tmp2 = data.createWallMoves( );
+		int size = tmp1.Length + tmp2.Length;
+		_data.walls = new GameObject[ size ];
+		for ( int i = 0; i < size; i++ ) {
+			if ( i < tmp1.Length ) {
+				int idx = i;
+				_data.walls[ i ] = tmp1[ idx ];
+			} else {
+				int idx = i - tmp1.Length;
+				_data.walls[ i ] = tmp2[ idx ];
+			}
 		}
 		//Switch
-		foreach ( GameObject obj in data.createSwitchs( ) ) {
-			_data._switch.Add( obj );
-		}
+		_data.switchs = data.createSwitchs( );
+		//Player
+		_data.player = data.createPlayer( );
 
 		if ( area == 0 ) {
 			_data.setActives( true );
 		} else {
 			_data.setActives( false );
+		}
+	}
+
+	void destroyArea( ) {
+		if ( _data == null ) {
+			return;
+		}
+		//Player
+		if ( _data.player != null ) {
+			Destroy( _data.player );
+		}
+		//Goal
+		if ( _data.goal != null ) {
+			Destroy( _data.goal );
+		}
+		//Wall / move
+		foreach ( GameObject obj in _data.walls ) {
+			Destroy( obj );
+		}
+		//Switch
+		foreach ( GameObject obj in _data.switchs ) {
+			Destroy( obj );
 		}
 	}
 
@@ -170,6 +239,20 @@ public class Play : MonoBehaviour {
 			_stock_ui[ i ] = GameObject.Find( path );
 		}
 	}
+	void findGameClearUI( ) {
+		_clear_ui = GameObject.Find( "UI" ).transform.Find( "GameClear" ).gameObject;
+		_clear_ui.SetActive( false );
+	}
+
+	void findAreaTxtUI( ) {
+		_area_txt_ui = GameObject.Find( "UI" ).transform.Find( "AreaTxt" ).gameObject;
+		_area_txt_ui.SetActive( false );
+	}
+
+	void setRetireButton( ) {
+		Button button = GameObject.Find( "UI" ).transform.Find( "Retire" ).GetComponent< Button >( );
+		button.onClick.AddListener( retire );
+	}
 	//------------------------------------------------//
 
 	
@@ -178,6 +261,9 @@ public class Play : MonoBehaviour {
 	public static string getTag( BOARDOBJECT type ) {
 		string tag = "";
 		switch ( type ) {
+		case BOARDOBJECT.BG:
+			tag = "Bg";
+			break;
 		case BOARDOBJECT.PLAYER:
 			tag = "Player";
 			break;
@@ -204,6 +290,9 @@ public class Play : MonoBehaviour {
 	public static string getPrefabPath( BOARDOBJECT type ) {
 		string path = getPrefabDir( ) + "/";
 		switch ( type ) {
+		case BOARDOBJECT.BG:
+			path += "Bg";
+			break;
 		case BOARDOBJECT.PLAYER:
 			path += "Player";
 			break;
@@ -231,5 +320,12 @@ public class Play : MonoBehaviour {
 		return  getDataDir( stage ) + "/" + area.ToString( );
 	}
 
+	public static string getDataTutorialDir( ) {
+		return "Play/Data/Board/Tutorial/";
+	}
+
+	public static string getDataTutorialPath( int area ) {
+		return  getDataTutorialDir( ) + area.ToString( );
+	}
 	//------------------------------------------------//
 }

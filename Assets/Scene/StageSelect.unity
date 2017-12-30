@@ -42,7 +42,7 @@ RenderSettings:
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 11
+  serializedVersion: 9
   m_GIWorkflowMode: 1
   m_GISettings:
     serializedVersion: 2
@@ -54,7 +54,7 @@ LightmapSettings:
     m_EnableBakedLightmaps: 0
     m_EnableRealtimeLightmaps: 0
   m_LightmapEditorSettings:
-    serializedVersion: 9
+    serializedVersion: 8
     m_Resolution: 2
     m_BakeResolution: 40
     m_TextureWidth: 1024
@@ -87,7 +87,7 @@ LightmapSettings:
     m_PVRFilteringAtrousNormalSigma: 1
     m_PVRFilteringAtrousPositionSigma: 1
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_ShadowMaskMode: 2
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -304,6 +304,18 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 1023996997290526, guid: c20041d0aac1a0447a2465d9b1984087, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1023996997290526, guid: c20041d0aac1a0447a2465d9b1984087, type: 2}
+      propertyPath: m_TagString
+      value: SelectButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 1023996997290526, guid: c20041d0aac1a0447a2465d9b1984087, type: 2}
+      propertyPath: m_Name
+      value: Button0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c20041d0aac1a0447a2465d9b1984087, type: 2}
   m_IsPrefabParent: 0
@@ -411,12 +423,20 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1023996997290526, guid: c20041d0aac1a0447a2465d9b1984087, type: 2}
       propertyPath: m_Name
-      value: Button (3)
+      value: Button3
       objectReference: {fileID: 0}
     - target: {fileID: 114470217541503788, guid: c20041d0aac1a0447a2465d9b1984087,
         type: 2}
       propertyPath: stage
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1023996997290526, guid: c20041d0aac1a0447a2465d9b1984087, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1023996997290526, guid: c20041d0aac1a0447a2465d9b1984087, type: 2}
+      propertyPath: m_TagString
+      value: SelectButton
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c20041d0aac1a0447a2465d9b1984087, type: 2}
@@ -587,12 +607,20 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1023996997290526, guid: c20041d0aac1a0447a2465d9b1984087, type: 2}
       propertyPath: m_Name
-      value: Button (4)
+      value: Button4
       objectReference: {fileID: 0}
     - target: {fileID: 114470217541503788, guid: c20041d0aac1a0447a2465d9b1984087,
         type: 2}
       propertyPath: stage
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1023996997290526, guid: c20041d0aac1a0447a2465d9b1984087, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1023996997290526, guid: c20041d0aac1a0447a2465d9b1984087, type: 2}
+      propertyPath: m_TagString
+      value: SelectButton
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c20041d0aac1a0447a2465d9b1984087, type: 2}
@@ -659,7 +687,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
 --- !u!4 &1005494006
 Transform:
   m_ObjectHideFlags: 0
@@ -813,12 +840,20 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1023996997290526, guid: c20041d0aac1a0447a2465d9b1984087, type: 2}
       propertyPath: m_Name
-      value: Button (5)
+      value: Button5
       objectReference: {fileID: 0}
     - target: {fileID: 114470217541503788, guid: c20041d0aac1a0447a2465d9b1984087,
         type: 2}
       propertyPath: stage
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1023996997290526, guid: c20041d0aac1a0447a2465d9b1984087, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1023996997290526, guid: c20041d0aac1a0447a2465d9b1984087, type: 2}
+      propertyPath: m_TagString
+      value: SelectButton
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c20041d0aac1a0447a2465d9b1984087, type: 2}
@@ -927,12 +962,20 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1023996997290526, guid: c20041d0aac1a0447a2465d9b1984087, type: 2}
       propertyPath: m_Name
-      value: Button (2)
+      value: Button2
       objectReference: {fileID: 0}
     - target: {fileID: 114470217541503788, guid: c20041d0aac1a0447a2465d9b1984087,
         type: 2}
       propertyPath: stage
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1023996997290526, guid: c20041d0aac1a0447a2465d9b1984087, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1023996997290526, guid: c20041d0aac1a0447a2465d9b1984087, type: 2}
+      propertyPath: m_TagString
+      value: SelectButton
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c20041d0aac1a0447a2465d9b1984087, type: 2}
@@ -1092,7 +1135,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1023996997290526, guid: c20041d0aac1a0447a2465d9b1984087, type: 2}
       propertyPath: m_Name
-      value: Button (1)
+      value: Button1
       objectReference: {fileID: 0}
     - target: {fileID: 114470217541503788, guid: c20041d0aac1a0447a2465d9b1984087,
         type: 2}
@@ -1107,6 +1150,10 @@ Prefab:
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1023996997290526, guid: c20041d0aac1a0447a2465d9b1984087, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c20041d0aac1a0447a2465d9b1984087, type: 2}
   m_IsPrefabParent: 0
@@ -1115,6 +1162,48 @@ RectTransform:
   m_PrefabParentObject: {fileID: 224172854167536912, guid: c20041d0aac1a0447a2465d9b1984087,
     type: 2}
   m_PrefabInternal: {fileID: 1860181441}
+--- !u!1001 &1959967779
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4219336501037486, guid: b5cd5b29b1319f443a2a7c0e0a22a378, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4219336501037486, guid: b5cd5b29b1319f443a2a7c0e0a22a378, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4219336501037486, guid: b5cd5b29b1319f443a2a7c0e0a22a378, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4219336501037486, guid: b5cd5b29b1319f443a2a7c0e0a22a378, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4219336501037486, guid: b5cd5b29b1319f443a2a7c0e0a22a378, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4219336501037486, guid: b5cd5b29b1319f443a2a7c0e0a22a378, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4219336501037486, guid: b5cd5b29b1319f443a2a7c0e0a22a378, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4219336501037486, guid: b5cd5b29b1319f443a2a7c0e0a22a378, type: 2}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: b5cd5b29b1319f443a2a7c0e0a22a378, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &2060198896
 GameObject:
   m_ObjectHideFlags: 0
@@ -1172,7 +1261,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
 --- !u!4 &2060198898
 Transform:
   m_ObjectHideFlags: 0

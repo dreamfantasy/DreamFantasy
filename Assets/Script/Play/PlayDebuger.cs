@@ -7,9 +7,10 @@ class PlayDebuger : MonoBehaviour {
 		if ( Main.instance ) {
 			return;
 		}
-		Main.InstanceGame( gameObject );
-		Game.chapter = 0;
-		Game.stage = stage;
-		Game.loadScene( Game.SCENE.SCENE_PLAY );
+		Main.initialize( gameObject );
+		Game game = Game.Instance;
+		game.chapter = 0;
+		game.stage = stage;
+		game.loadScene( Game.SCENE.SCENE_PLAY );
 	}
 }

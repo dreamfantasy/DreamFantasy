@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 
 [System.Serializable]
-public class BoardData : ScriptableObject { 
+public class BoardData : ScriptableObject {
+	public Sprite _Bg;
 	[SerializeField]
     public PlayerData _Player;
 	[SerializeField]
@@ -16,6 +17,7 @@ public class BoardData : ScriptableObject {
 	
 	public void serchBoardObjects( ) {
 		Debug.Log( "Assetを更新しました" );
+		serchBg( );
 		serchPlayer( );
 		serchGoal( );
 		serchWall( );
@@ -23,30 +25,40 @@ public class BoardData : ScriptableObject {
 		serchSwitch( );
 	}
 
+	void serchBg( ) {
+		string tag = Play.getTag( Play.BOARDOBJECT.BG );
+		GameObject obj =  GameObject.FindGameObjectWithTag( tag );
+		if ( obj == null ) {
+			_Bg = null;
+			return;
+		}
+		_Bg = obj.GetComponent< SpriteRenderer >( ).sprite;
+	}
+
 	void serchPlayer( ) {
 		string tag = Play.getTag( Play.BOARDOBJECT.PLAYER );
-		Transform trans =  GameObject.FindGameObjectWithTag( tag ).GetComponent< Transform >( );
-		if ( trans == null ) {
+		GameObject obj = GameObject.FindGameObjectWithTag( tag );
+		if ( obj == null ) {
 			_Player = null;
 			return;
 		}
 		if ( _Player == null ) {
 			_Player = new PlayerData( );
 		}
-		copyTransform( trans, _Player );
+		copyTransform( obj.GetComponent< Transform >( ), _Player );
 	}
 	
 	void serchGoal( ) {
 		string tag = Play.getTag( Play.BOARDOBJECT.GOAL );
-		Transform trans =  GameObject.FindGameObjectWithTag( tag ).GetComponent< Transform >( );
-		if ( trans == null ) {
+		GameObject obj = GameObject.FindGameObjectWithTag( tag );
+		if ( obj == null ) {
 			_Goal = null;
 			return;
 		}
 		if ( _Goal == null ) {
 			_Goal = new GoalData( );
 		}
-		copyTransform( trans, _Goal );
+		copyTransform( obj.GetComponent< Transform >( ), _Goal );
 	}
 
 	void serchWall( ) {
@@ -86,6 +98,8 @@ public class BoardData : ScriptableObject {
 		}
 		copyTransform( trans, add );
 		//option(なし)
+		SpriteRenderer compornent0 = obj.GetComponent< SpriteRenderer >( );
+		add.size = compornent0.size;
 		//追加
 		_Wall.Add( add );
 	}
@@ -101,8 +115,12 @@ public class BoardData : ScriptableObject {
 		copyTransform( trans, add );
 
 		//option
-		WallMove script = obj.GetComponent< WallMove >( );
-		add.option = script.option;
+		SpriteRenderer compornent0 = obj.GetComponent< SpriteRenderer >( );
+		add.size = compornent0.size;
+
+		WallMove compornent1 = obj.GetComponent< WallMove >( );
+		add.option = compornent1.option;
+
 		//追加
 		_WallMove.Add( add );
 	}
@@ -134,6 +152,16 @@ public class BoardData : ScriptableObject {
 		to.scl = from.localScale;
 	}
 
+	public GameObject createBg( ) {
+		if ( _Bg == null ) {
+			return null;
+		}
+		GameObject prefab = Resources.Load< GameObject >( Play.getPrefabPath( Play.BOARDOBJECT.BG ) );
+		GameObject obj = Instantiate( prefab );
+		obj.GetComponent< SpriteRenderer >( ).sprite = _Bg;
+		return obj;
+	}
+
 	public GameObject createPlayer( ) {
 		if ( _Player == null ) {
 			return null;
@@ -159,7 +187,8 @@ public class BoardData : ScriptableObject {
 		GameObject prefab = Resources.Load< GameObject >( Play.getPrefabPath( Play.BOARDOBJECT.WALL ) );
 		for ( int i = 0; i < _Wall.Count; i++ ) {
 			result[ i ] = Instantiate( prefab );
-			copyTransform( _Wall[ i ], result[ i ].GetComponent< Transform >( ) );
+			copyTransform( _Wall[ i ], result[ i ].GetComponent< Transform >( ) );  //Transform
+			result[ i ].GetComponent< SpriteRenderer >( ).size = _Wall[ i ].size;   //Size
 		}
 		return result;
 	}
@@ -169,8 +198,9 @@ public class BoardData : ScriptableObject {
 		GameObject prefab = Resources.Load< GameObject >( Play.getPrefabPath( Play.BOARDOBJECT.WALL_MOVE ) );
 		for ( int i = 0; i < _WallMove.Count; i++ ) {
 			result[ i ] = Instantiate( prefab );
-			copyTransform( _WallMove[ i ], result[ i ].GetComponent< Transform >( ) );
-			result[ i ].GetComponent< WallMove >( ).option = _WallMove[ i ].option;
+			copyTransform( _WallMove[ i ], result[ i ].GetComponent< Transform >( ) );//Transform
+			result[ i ].GetComponent< WallMove >( ).option = _WallMove[ i ].option;   //Option
+			result[ i ].GetComponent< SpriteRenderer >( ).size = _WallMove[ i ].size; //Size
 		}
 		return result;
 	}
@@ -202,10 +232,11 @@ public class BoardData : ScriptableObject {
 
 	[System.Serializable]
 	public class WallData     : Trans {
+		public Vector2 size;
 	}
 
 	[System.Serializable]
-	public class WallMoveData : Trans {
+	public class WallMoveData : WallData {
 		public WallMove.Option option;
 	}
 

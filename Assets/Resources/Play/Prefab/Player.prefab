@@ -60,9 +60,9 @@ MonoBehaviour:
   - {fileID: 21300000, guid: a9f05b36b44f9ce46ba9475b4cc5c6d1, type: 3}
   - {fileID: 21300000, guid: cf11055fb308b384588f8298f5e1f49a, type: 3}
   MOVE_SPEED: 50
-  MOVE_RANGE: 6
-  MAX_ALLOW_SIZE: 0.5
-  ALLOW_SIZE_RATIO: 0.001
+  MOVE_RANGE: 100
+  MAX_ALLOW_SIZE: 1.5
+  ALLOW_SIZE_RATIO: 0.003
 --- !u!212 &212433507270319184
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -94,7 +94,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 5
   m_Sprite: {fileID: 21300000, guid: cf11055fb308b384588f8298f5e1f49a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
