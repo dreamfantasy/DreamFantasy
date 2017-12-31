@@ -8,10 +8,8 @@ public class BoardData : ScriptableObject {
     public PlayerData _Player;
 	[SerializeField]
     public GoalData   _Goal  ;
-	[SerializeField]
+	[SerializeField ]
     public List< WallData     > _Wall     = new List< WallData     >( );
-	[SerializeField]
-    public List< WallMoveData > _WallMove = new List< WallMoveData >( );
 	[SerializeField]
     public List< SwitchData   > _Switch   = new List< SwitchData   >( );
 	
@@ -21,10 +19,10 @@ public class BoardData : ScriptableObject {
 		serchPlayer( );
 		serchGoal( );
 		serchWall( );
-		serchWallMove( );
 		serchSwitch( );
 	}
 
+	//------------------Serch-------------------//
 	void serchBg( ) {
 		string tag = Play.getTag( Play.BOARDOBJECT.BG );
 		GameObject obj =  GameObject.FindGameObjectWithTag( tag );
@@ -45,7 +43,7 @@ public class BoardData : ScriptableObject {
 		if ( _Player == null ) {
 			_Player = new PlayerData( );
 		}
-		copyTransform( obj.GetComponent< Transform >( ), _Player );
+		copy( obj, _Player );
 	}
 	
 	void serchGoal( ) {
@@ -58,7 +56,7 @@ public class BoardData : ScriptableObject {
 		if ( _Goal == null ) {
 			_Goal = new GoalData( );
 		}
-		copyTransform( obj.GetComponent< Transform >( ), _Goal );
+		copy( obj, _Goal );
 	}
 
 	void serchWall( ) {
@@ -70,15 +68,6 @@ public class BoardData : ScriptableObject {
 		}
 	}
 
-	void serchWallMove( ) {
-		_WallMove.Clear( );
-		string tag = Play.getTag( Play.BOARDOBJECT.WALL_MOVE );
-		GameObject[ ] objects = GameObject.FindGameObjectsWithTag( tag );
-		foreach( GameObject obj in objects ) {
-			addWallMove( obj );
-		}
-	}
-
 	void serchSwitch( ) {
 		_Switch.Clear( );
 		string tag = Play.getTag( Play.BOARDOBJECT.SWITCH );
@@ -87,21 +76,26 @@ public class BoardData : ScriptableObject {
 			addSwitch( obj );
 		}
 	}
+	//-----------------/Serch-------------------//
 
+	//------------------Add---------------------//
 	void addWall( GameObject obj ) {
-		WallData add = new WallData( );
-		//trans
-		Transform trans =  obj.GetComponent< Transform >( );
-		if ( trans == null ) {
+		//Null Check
+		if ( obj == null ) {
 			Debug.Log( "wall Trans : null" );
 			return;
 		}
-		copyTransform( trans, add );
-		//option(なし)
-		SpriteRenderer compornent0 = obj.GetComponent< SpriteRenderer >( );
-		add.size = compornent0.size;
-		//追加
-		_Wall.Add( add );
+		//継承確認
+		if ( obj.GetComponent< WallMove >( ) != null ) {
+			WallMoveData add = new WallMoveData( );
+			copy( obj, add );
+			_Wall.Add( add );
+
+		} else {
+			WallData add = new WallData( );
+			copy( obj, add );
+			_Wall.Add( add );
+		}
 	}
 	
 	void addWallMove( GameObject obj ) {
@@ -112,7 +106,8 @@ public class BoardData : ScriptableObject {
 			Debug.Log( "wall move Trans : null" );
 			return;
 		}
-		copyTransform( trans, add );
+		copy( obj, add );
+
 
 		//option
 		SpriteRenderer compornent0 = obj.GetComponent< SpriteRenderer >( );
@@ -122,35 +117,90 @@ public class BoardData : ScriptableObject {
 		add.option = compornent1.option;
 
 		//追加
-		_WallMove.Add( add );
+		_Wall.Add( add );
 	}
 
 	void addSwitch( GameObject obj ) {
 		SwitchData add = new SwitchData( );
-		//trans
-		Transform trans =  obj.GetComponent< Transform >( );
-		if ( trans == null ) {
-			Debug.Log( "Switch Trans : null" );
+		if ( obj == null ) {
+			Debug.Log( "Switch : null" );
 			return;
 		}
 
-		copyTransform( trans, add );
+		copy( obj, add );
 		//option(なし)
 		//追加
 		_Switch.Add( add );
 	}
+	//-----------------/Add---------------------//
 
-	public static void copyTransform( Trans from, Transform to ) {
-		to.transform.position   = from.pos;
-		to.transform.rotation   = from.rot;
-		to.transform.localScale = from.scl;
+	//------------------Copy---------------------//
+	//-----Common----//
+	public static void copy( GameObject from, CommonData to ) {
+		to.pos = from.GetComponent< Transform >( ).position; //Pos
 	}
+	public static void copy( CommonData from, GameObject to ) {
+		to.GetComponent< Transform >( ).position = from.pos; //Pos
+	}
+	//----/Common----//
 
-	public static void copyTransform( Transform from, Trans to ) {
-		to.pos = from.position;
-		to.rot = from.rotation;
-		to.scl = from.localScale;
+	//-----Player----//
+	public static void copy( GameObject from, PlayerData to ) {
+		copy( from, ( CommonData )to );
 	}
+	public static void copy( PlayerData from, GameObject to ) {
+		copy( ( CommonData )from, to );
+	}
+	//----/Player----//
+
+	//------Goal-----//
+	public static void copy( GameObject from, GoalData to ) {
+		copy( from, ( CommonData )to );
+	}
+	public static void copy( GoalData from, GameObject to ) {
+		copy( ( CommonData )from, to );
+	}
+	//-----/Goal-----//
+
+	//------Wall-----//
+	public static void copy( GameObject from, WallData to ) {
+		copy( from, ( CommonData )to );
+		to.rot = from.GetComponent< Transform >( ).rotation;  //rot
+		SpriteRenderer sr = from.GetComponent< SpriteRenderer >( );
+		to.size   = sr.size;  //Size
+		to.sprite = sr.sprite;//Sprite
+	}
+	public static void copy( WallData from, GameObject to ) {
+		copy( ( CommonData )from, to );
+		to.GetComponent< Transform >( ).rotation = from.rot;  //rot
+		SpriteRenderer sr = to.GetComponent< SpriteRenderer >( );
+		sr.size   = from.size;   //Size
+		sr.sprite = from.sprite; //Sprite
+	}
+	//-----/Wall-----//
+
+	//-----Switch----//
+	public static void copy( GameObject from, SwitchData to ) {
+		copy( from, ( CommonData )to );
+	}
+	public static void copy( SwitchData from, GameObject to ) {
+		copy( ( CommonData )from, to );
+	}
+	//----/Switch----//
+
+	//------------継承-----------//
+	//------Wall-----//
+	public static void copy( GameObject from, WallMoveData to ) {
+		copy( from, ( WallData )to );
+		to.option = from.GetComponent< WallMove >( ).option;
+	}
+	public static void copy( WallMoveData from, GameObject to ) {
+		copy( ( WallData )from, to );
+		to.GetComponent< WallMove >( ).option = from.option;
+	}
+	//-----/Wall-----//
+	//-----------/継承-----------//
+	//-----------------/Copy---------------------//
 
 	public GameObject createBg( ) {
 		if ( _Bg == null ) {
@@ -168,7 +218,7 @@ public class BoardData : ScriptableObject {
 		}
 		GameObject prefab = Resources.Load< GameObject >( Play.getPrefabPath( Play.BOARDOBJECT.PLAYER ) );
 		GameObject obj = Instantiate( prefab );
-		copyTransform( _Player,  obj.GetComponent< Transform >( ) );
+		copy( _Player,  obj );
 		return obj;
 	}
 
@@ -178,7 +228,7 @@ public class BoardData : ScriptableObject {
 		}
 		GameObject prefab = Resources.Load< GameObject >( Play.getPrefabPath( Play.BOARDOBJECT.GOAL ) );
 		GameObject obj = Instantiate( prefab );
-		copyTransform( _Goal,  obj.GetComponent< Transform >( ) );
+		copy( _Goal,  obj );
 		return obj;
 	}
 
@@ -187,20 +237,18 @@ public class BoardData : ScriptableObject {
 		GameObject prefab = Resources.Load< GameObject >( Play.getPrefabPath( Play.BOARDOBJECT.WALL ) );
 		for ( int i = 0; i < _Wall.Count; i++ ) {
 			result[ i ] = Instantiate( prefab );
-			copyTransform( _Wall[ i ], result[ i ].GetComponent< Transform >( ) );  //Transform
-			result[ i ].GetComponent< SpriteRenderer >( ).size = _Wall[ i ].size;   //Size
-		}
-		return result;
-	}
-
-	public GameObject[ ] createWallMoves( ) {
-		GameObject[ ] result = new GameObject[ _WallMove.Count ];
-		GameObject prefab = Resources.Load< GameObject >( Play.getPrefabPath( Play.BOARDOBJECT.WALL_MOVE ) );
-		for ( int i = 0; i < _WallMove.Count; i++ ) {
-			result[ i ] = Instantiate( prefab );
-			copyTransform( _WallMove[ i ], result[ i ].GetComponent< Transform >( ) );//Transform
-			result[ i ].GetComponent< WallMove >( ).option = _WallMove[ i ].option;   //Option
-			result[ i ].GetComponent< SpriteRenderer >( ).size = _WallMove[ i ].size; //Size
+			//継承チェック
+			if ( _Wall[ i ] is WallMoveData ) {
+				if ( Application.isPlaying ) {
+					Destroy( result[ i ].GetComponent< Wall >( ) );
+				} else {
+					DestroyImmediate( result[ i ].GetComponent< Wall >( ) );
+				}
+				result[ i ].AddComponent< WallMove >( );
+				copy( _Wall[ i ] as WallMoveData, result[ i ] );
+			} else {
+				copy( _Wall[ i ], result[ i ] );
+			}
 		}
 		return result;
 	}
@@ -210,37 +258,42 @@ public class BoardData : ScriptableObject {
 		GameObject prefab = Resources.Load< GameObject >( Play.getPrefabPath( Play.BOARDOBJECT.SWITCH ) );
 		for ( int i = 0; i < _Switch.Count; i++ ) {
 			result[ i ] = Instantiate( prefab );
-			copyTransform( _Switch[ i ], result[ i ].GetComponent< Transform >( ) );
+			copy( _Switch[ i ], result[ i ] );
 		}
 		return result;
 	}
 
+
+	//-----------------オブジェクト-----------------//
 	[System.Serializable]
-	public class Trans  {
-		public Vector3 pos = new Vector3( );
-		public Quaternion rot = new Quaternion( );
-		public Vector3 scl = new Vector3( );
-	}
-	
-	[System.Serializable]
-	public class PlayerData   : Trans {
+	public class CommonData {
+		public Vector3 pos;
 	}
 
 	[System.Serializable]
-	public class GoalData     : Trans {
+	public class PlayerData : CommonData {
 	}
 
 	[System.Serializable]
-	public class WallData     : Trans {
+	public class GoalData : CommonData {
+	}
+
+	[System.Serializable]
+	public class WallData : CommonData {
+		public Quaternion rot;
 		public Vector2 size;
+		public Sprite sprite;
 	}
 
+	[System.Serializable]
+	public class SwitchData : CommonData {
+	}
+
+	//-----------------継承-----------------//
 	[System.Serializable]
 	public class WallMoveData : WallData {
+		[SerializeField]
 		public WallMove.Option option;
 	}
 
-	[System.Serializable]
-	public class SwitchData   : Trans {
-	}
 }

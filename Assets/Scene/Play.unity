@@ -636,6 +636,16 @@ Prefab:
       propertyPath: m_TagString
       value: MainCamera
       objectReference: {fileID: 0}
+    - target: {fileID: 20420635403884938, guid: d8fa1f2ebdc265e408859a2522aefa5b,
+        type: 2}
+      propertyPath: m_NormalizedViewPortRect.x
+      value: 0.125
+      objectReference: {fileID: 0}
+    - target: {fileID: 20420635403884938, guid: d8fa1f2ebdc265e408859a2522aefa5b,
+        type: 2}
+      propertyPath: m_NormalizedViewPortRect.width
+      value: 0.75
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d8fa1f2ebdc265e408859a2522aefa5b, type: 2}
   m_IsPrefabParent: 0
@@ -929,23 +939,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _Bg: {fileID: 21300000, guid: 1e9be571be8b119408f2e983b6b1e87f, type: 3}
   _Player:
-    pos: {x: 286, y: -507, z: 0}
-    rot: {x: 0, y: 0, z: 0, w: 1}
-    scl: {x: 1, y: 1, z: 1}
+    pos: {x: 100, y: -500, z: 0}
   _Goal:
-    pos: {x: -243, y: 516, z: 0}
-    rot: {x: 0, y: 0, z: 0, w: 1}
-    scl: {x: 1, y: 1, z: 1}
+    pos: {x: 100, y: 500, z: 0}
   _Wall:
   - pos: {x: 540, y: 0, z: 0}
     rot: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-    scl: {x: 1, y: 1, z: 1}
-    size: {x: 0, y: 0}
-  _WallMove: []
-  _Switch:
-  - pos: {x: 0, y: 0, z: 0}
+    size: {x: 256, y: 700}
+    sprite: {fileID: 21300000, guid: 2d97921f107264a4198b11d2f44a5d0f, type: 3}
+  - pos: {x: -377, y: -107, z: 0}
     rot: {x: 0, y: 0, z: 0, w: 1}
-    scl: {x: 1, y: 1, z: 1}
+    size: {x: 256, y: 256}
+    sprite: {fileID: 21300000, guid: 2d97921f107264a4198b11d2f44a5d0f, type: 3}
+  _Switch: []
 --- !u!1 &1706298118
 GameObject:
   m_ObjectHideFlags: 0
@@ -1028,3 +1034,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1927238836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6905763cd28f26440b6bac65a81fb0bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Bg: {fileID: 0}
+  _Player:
+    pos: {x: 0, y: 0, z: 0}
+  _Goal:
+    pos: {x: 0, y: 0, z: 0}
+  _Wall: []
+  _Switch: []

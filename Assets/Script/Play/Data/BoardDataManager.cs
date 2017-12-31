@@ -70,7 +70,6 @@ public class BoardDataManager : MonoBehaviour {
 		to._Player = from._Player;
 		to._Goal = from._Goal;
 		to._Wall = from._Wall;
-		to._WallMove = from._WallMove;
 		to._Switch = from._Switch;
 	}
 
@@ -94,7 +93,6 @@ public class BoardDataManager : MonoBehaviour {
 		Data.createPlayer( );
 		Data.createGoal( );
 		Data.createWalls( );
-		Data.createWallMoves( );
 		Data.createSwitchs( );
 	}
 
@@ -122,13 +120,6 @@ public class BoardDataManager : MonoBehaviour {
 		}
 		{//wall削除
 			string tag = Play.getTag( Play.BOARDOBJECT.WALL );
-			GameObject[ ] objects = GameObject.FindGameObjectsWithTag( tag );
-			foreach( GameObject obj in objects ) {
-				DestroyImmediate( obj );
-			}
-		}
-		{//wallMove削除
-			string tag = Play.getTag( Play.BOARDOBJECT.WALL_MOVE );
 			GameObject[ ] objects = GameObject.FindGameObjectsWithTag( tag );
 			foreach( GameObject obj in objects ) {
 				DestroyImmediate( obj );

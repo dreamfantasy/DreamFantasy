@@ -1,65 +1,31 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEditor;
-using System;
 
-[CustomEditor( typeof( BoardDataManager ) ) ]
+[CustomEditor( typeof( BoardData ), true ) ]
 public class BoardDataInspecter : Editor {
+	bool folder_wall = false;
 	public override void OnInspectorGUI( ) {
 		base.OnInspectorGUI( );
-		BoardDataManager targetComponent = target as BoardDataManager;
+		BoardData targetComponent = target as BoardData;
+		//Wall
+		folder_wall = EditorGUILayout.Foldout( folder_wall, "Wall継承 <List>" );
+		if ( folder_wall ) {
+			EditorGUI.indentLevel = EditorGUI.indentLevel + 1;
+			int count = 0;
+			foreach ( BoardData.WallData data in targetComponent._Wall ) {
+				count++;
+				if ( data is BoardData.WallMoveData ) {
+					EditorGUILayout.LabelField( count.ToString( ), "WallMove" );
 
-		{//label
-			string label = "( none )  [Create/Load]してください";
-			if ( targetComponent.Data != null ) {
-				label = "BoardData" + targetComponent.Data.ToString( );
+					BoardData.WallMoveData move = data as BoardData.WallMoveData;
+					EditorGUILayout.Vector2Field( "Vec", move.option.vec );
+					EditorGUILayout.IntField( "ReverseTime", move.option.reverse_time );
+				} else {
+					EditorGUILayout.LabelField( count.ToString( ), "Wall" );
+				}
 			}
-			EditorGUILayout.LabelField( "Data", label );
+			EditorGUI.indentLevel = EditorGUI.indentLevel - 1;
 		}
-
-
-		if ( targetComponent.Data ) {
-			{//player
-				string label = targetComponent.Data._Player != null ? "有" : "無";
-				EditorGUILayout.LabelField( "Player", label );
-			}
-			{//Goal
-				string label = targetComponent.Data._Goal != null ? "有" : "無";
-				EditorGUILayout.LabelField( "Goal", label );
-			}
-			{//wall
-				string label = "Num:" + targetComponent.Data._Wall.Count;
-				EditorGUILayout.LabelField( "Wall", label );
-			}
-			{//wallMove
-				string label = "Num:" + targetComponent.Data._WallMove.Count;
-				EditorGUILayout.LabelField( "WallMove", label );
-			}
-			{//switch
-				string label = "Num:" + targetComponent.Data._Switch.Count;
-				EditorGUILayout.LabelField( "Switch", label );
-			}
-			//button
-			if ( GUILayout.Button( "更新" ) ) {
-				targetComponent.serchObject( );
-			}
-		}
-		EditorGUILayout.LabelField( "" );
-		EditorGUILayout.LabelField( "Asset" );
-
-		GUILayout.BeginHorizontal( );
-		//button
-		if ( GUILayout.Button( "Init" ) ) {
-			targetComponent.init( );
-		}
-		if ( GUILayout.Button( "Load" ) ) {
-			targetComponent.loadAsset( );
-		}
-		if ( GUILayout.Button( "Save" ) ) {
-			targetComponent.serchObject( );
-			targetComponent.saveAsset( );
-		}
-		GUILayout.EndHorizontal( );
 	}
 }
+

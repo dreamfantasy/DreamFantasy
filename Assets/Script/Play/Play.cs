@@ -10,7 +10,6 @@ public class Play : MonoBehaviour {
 		GOAL,
 		SWITCH,
 		WALL,
-		WALL_MOVE,
 	};
 	public enum STATE {
 		WAIT,
@@ -43,9 +42,6 @@ public class Play : MonoBehaviour {
 	//-----------関数------------//
 
 	void Awake( ) {
-		if ( !Main.instance ) {
-			return;
-		}
 		setRetireButton( );
 		createLimitMoveWall( );
 		loadAreaData( 0 );
@@ -152,21 +148,8 @@ public class Play : MonoBehaviour {
 		data.createBg( );
 		//Goal
 		_data.goal = data.createGoal( );
-		//Wall
-		//WallMove
-		GameObject[ ] tmp1 = data.createWalls( );
-		GameObject[ ] tmp2 = data.createWallMoves( );
-		int size = tmp1.Length + tmp2.Length;
-		_data.walls = new GameObject[ size ];
-		for ( int i = 0; i < size; i++ ) {
-			if ( i < tmp1.Length ) {
-				int idx = i;
-				_data.walls[ i ] = tmp1[ idx ];
-			} else {
-				int idx = i - tmp1.Length;
-				_data.walls[ i ] = tmp2[ idx ];
-			}
-		}
+		//Wall & WallMove
+		_data.walls = data.createWalls( );
 		//Switch
 		_data.switchs = data.createSwitchs( );
 		//Player
@@ -276,9 +259,6 @@ public class Play : MonoBehaviour {
 		case BOARDOBJECT.WALL:
 			tag = "Wall";
 			break;
-		case BOARDOBJECT.WALL_MOVE:
-			tag = "WallMove";
-			break;
 		}
 		return tag;
 	}
@@ -304,9 +284,6 @@ public class Play : MonoBehaviour {
 			break;
 		case BOARDOBJECT.WALL:
 			path += "Wall";
-			break;
-		case BOARDOBJECT.WALL_MOVE:
-			path += "WallMove";
 			break;
 		}
 		return path;

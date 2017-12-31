@@ -1,15 +1,16 @@
 ﻿using System.Collections;
 using UnityEngine;
+//using UnityEditor.SceneManagement;
+using UnityEditor;
 
+[ExecuteInEditMode]
 public class CameraController : MonoBehaviour {
 	const float WIDTH  =  9.0f;
 	const float HEIGHT = 16.0f;
 
-	void Awake( ) {
-		GetComponent< Camera >( ).rect = getRect( ); 
-	}
+	void Start( ) { setRect( );	}
 
-	Rect getRect( ) {
+	void setRect( ) {
 		Rect rect = new Rect( );
 		float target_aspect = WIDTH / HEIGHT;
 		float screen_aspect = ( float )Screen.width / Screen.height;
@@ -27,6 +28,6 @@ public class CameraController : MonoBehaviour {
 			rect.width = scale_width;
 			rect.height = 1.0f;
 		}
-		return rect;
+		GetComponent< Camera >( ).rect = rect;
 	}
 }
