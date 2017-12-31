@@ -45,7 +45,11 @@ public class Title : MonoBehaviour {
 			}
 			//タッチで次のシーン
 			if ( Device.Instanse.Phase == Device.PHASE.ENDED ) {
-				Game.Instance.loadScene( Game.SCENE.SCENE_STAGESELECT );
+				if ( Game.Instance.tutorial ) {
+					Game.Instance.loadScene( Game.SCENE.SCENE_SCENARIO );
+				} else {
+					Game.Instance.loadScene( Game.SCENE.SCENE_STAGESELECT );
+				}
 			}
 		}
 		_count++;

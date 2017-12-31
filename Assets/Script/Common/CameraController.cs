@@ -8,7 +8,15 @@ public class CameraController : MonoBehaviour {
 	const float WIDTH  =  9.0f;
 	const float HEIGHT = 16.0f;
 
-	void Start( ) { setRect( );	}
+	void Awake( ) { setRect( );	}
+
+	#if UNITY_EDITOR
+	void Update( ) {
+		if ( !Application.isPlaying ) {
+			setRect( );
+		}
+	}
+	#endif
 
 	void setRect( ) {
 		Rect rect = new Rect( );

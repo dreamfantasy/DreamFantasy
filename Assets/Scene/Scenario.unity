@@ -263,6 +263,16 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 20420635403884938, guid: d8fa1f2ebdc265e408859a2522aefa5b,
+        type: 2}
+      propertyPath: m_NormalizedViewPortRect.x
+      value: 0.22789061
+      objectReference: {fileID: 0}
+    - target: {fileID: 20420635403884938, guid: d8fa1f2ebdc265e408859a2522aefa5b,
+        type: 2}
+      propertyPath: m_NormalizedViewPortRect.width
+      value: 0.5442188
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d8fa1f2ebdc265e408859a2522aefa5b, type: 2}
   m_IsPrefabParent: 0
@@ -483,7 +493,7 @@ GameObject:
   - component: {fileID: 1423918448}
   - component: {fileID: 1423918447}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

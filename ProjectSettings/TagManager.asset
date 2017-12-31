@@ -6,7 +6,6 @@ TagManager:
   tags:
   - SelectButton
   - Wall
-  - WallMove
   - Goal
   - Switch
   - Bg

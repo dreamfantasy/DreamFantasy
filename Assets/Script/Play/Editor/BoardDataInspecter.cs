@@ -16,7 +16,7 @@ public class BoardDataInspecter : Editor {
 				count++;
 				if ( data is BoardData.WallMoveData ) {
 					EditorGUILayout.LabelField( count.ToString( ), "WallMove" );
-
+					//Option
 					BoardData.WallMoveData move = data as BoardData.WallMoveData;
 					EditorGUILayout.Vector2Field( "Vec", move.option.vec );
 					EditorGUILayout.IntField( "ReverseTime", move.option.reverse_time );

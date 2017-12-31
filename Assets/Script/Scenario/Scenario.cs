@@ -14,8 +14,9 @@ public class Scenario : MonoBehaviour {
 	int _line;
 
 	void Awake( ) {
-		_msg_text  = GameObject.Find( "Canvas/MsgBox/Text" ).GetComponent< Text >( );
-		_name_text = GameObject.Find( "Canvas/NameBox/Text" ).GetComponent< Text >( );
+		GameObject ui = GameObject.Find( "UI" );
+		_msg_text  = ui.transform.Find( "MsgBox/Text"  ).GetComponent< Text >( );
+		_name_text = ui.transform.Find( "NameBox/Text" ).GetComponent< Text >( );
 		loadData( );
 	}
 
@@ -23,17 +24,13 @@ public class Scenario : MonoBehaviour {
 		if ( _data.Length <= 0 ) {
 			return;
 		}
-		
-		for ( int i = 0; i < _data.Length; i++ ) {
-			print( "msg" + i.ToString( ) + ":" + _data[ i ].msg );
-		}
+
 		_line = 0;
 		setData( );
 	}
 
 	void Update( ) {
 		if ( Device.Instanse.Phase == Device.PHASE.ENDED ) {
-			print( "touch" );
 			_line++;
 			if ( _line >= _data.Length ) {
 				Game.Instance.loadScene( Game.SCENE.SCENE_PLAY );
@@ -45,9 +42,7 @@ public class Scenario : MonoBehaviour {
 	}
 
 	void loadData( ) {
-		TextAsset text = Resources.Load( "Scenario/Story/" +
-			Game.Instance.chapter.ToString( ) + "/" +
-			Game.Instance.stage.ToString( ) ) as TextAsset;
+		TextAsset text = Resources.Load( getDataPath( ) ) as TextAsset;
 		if ( !text ) {
 			print( "シナリオがありません\n" );
 			return;
@@ -68,5 +63,13 @@ public class Scenario : MonoBehaviour {
 	void setData( ) {
 		_msg_text.text  = _data[ _line ].msg;
 		_name_text.text = _data[ _line ].name;
+	}
+
+	string getDataPath( ) {
+		string dir = "Scenario/Story/";
+		if ( Game.Instance.tutorial ) {
+			return dir + "Tutorial";
+		}
+		return dir + Game.Instance.chapter.ToString( ) + "/" + Game.Instance.stage.ToString( );
 	}
 }

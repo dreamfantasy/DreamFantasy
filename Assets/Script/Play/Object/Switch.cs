@@ -4,23 +4,39 @@ using UnityEngine;
 
 public class Switch : MonoBehaviour {
 	public bool enable { get; private set; }
+	private Color color_on  = new Color( 0.5f, 1, 1 );
+	private Color color_off = new Color( 1, 0.4f, 0.4f );
 
 	void Awake( ) {
-		enable = true;
-		CircleCollider2D col = gameObject.AddComponent< CircleCollider2D >( );
-		col.isTrigger = true;
+		addCollider( );
+	}
+
+	void Start( ) {
+		setEnable( true );	 
 	}
 
 	public void reset( ) {
-		enable = false;
-		GetComponent< SpriteRenderer >( ).color = new Color( 1, 1, 1 );
+		setEnable( true );
 	}
 
 	void OnTriggerEnter2D( Collider2D other ) {
 		if ( other.tag != "Player" ) {
 			return;
 		}
-		enable = false;
-		GetComponent< SpriteRenderer >( ).color = new Color( 1, 0.4f, 0.4f );
+		setEnable( false );
+	}
+
+	void setEnable( bool value ) {
+		enable = value;
+		if ( enable ) {
+			GetComponent< SpriteRenderer >( ).color = color_on;
+		} else {
+			GetComponent< SpriteRenderer >( ).color = color_off;
+		}
+	}
+
+	void addCollider( ) {
+		CircleCollider2D col = gameObject.AddComponent< CircleCollider2D >( );
+		col.isTrigger = true;
 	}
 }

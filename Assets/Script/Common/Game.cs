@@ -28,7 +28,6 @@ public class Game : MonoBehaviour {
 		reset( );
 		Instance = this;
 	}
-	void Start ( ) { }
 
 	void Update( ) {
 		//debugキー

@@ -66,11 +66,14 @@ public class Play : MonoBehaviour {
 				_area_txt_ui.SetActive( true );
 				_area_txt_ui.GetComponent< Text >( ).text = getAreaString( );
 			}
-			if ( Device.Instanse.Phase == Device.PHASE.ENDED ) {
-				//プレイヤーが操作できる状態に以降
-				Vector2 tmp = Device.Instanse.Pos;
-				_area_txt_ui.SetActive( false );
-				state = STATE.PLAY;
+			if ( _count > START_WAIT_COUNT ) {
+				if ( Device.Instanse.Phase == Device.PHASE.ENDED ) {
+					//プレイヤーが操作できる状態に以降
+					Vector2 tmp = Device.Instanse.Pos;
+					_area_txt_ui.SetActive( false );
+					state = STATE.PLAY;
+					_count = 0;
+				}
 			}
 			break;
 		case STATE.PLAY:
@@ -81,11 +84,13 @@ public class Play : MonoBehaviour {
 			//プレイヤーがゴールに行った
 			if ( _data.goal.GetComponent< Goal >( ).EnterPlayer ) {
 				state = STATE.STAGE_CLEAR;
+				_count = 0;
 			}
 			break;
 		case STATE.STAGE_CLEAR:
 			//次のエリアを読み込み
 			state = STATE.WAIT;
+			_count = 0;
 			_area++;
 			loadAreaData( _area );
 			break;
@@ -94,6 +99,10 @@ public class Play : MonoBehaviour {
 				_clear_ui.SetActive( true );
 			}
 			if ( Device.Instanse.Phase == Device.PHASE.ENDED ) {
+				if ( !Game.Instance.tutorial ) {
+					Game.Instance.clear_stage = Game.Instance.stage;
+				}
+				Game.Instance.tutorial = false;
 				Game.Instance.loadScene( Game.SCENE.SCENE_STAGESELECT );
 			}
 			break;
@@ -137,7 +146,11 @@ public class Play : MonoBehaviour {
 			return;
 		}
 		_data = new PlayData( );
-		BoardData data = ( BoardData )Resources.Load( getDataPath( Game.Instance.stage, area ) );
+		string path = getDataPath( Game.Instance.stage, area );
+		if ( Game.Instance.tutorial ) {
+			path = getDataTutorialPath( area );
+		}
+		BoardData data = ( BoardData )Resources.Load( path );
 		if ( data == null ) {
 			print( "エリアのAssetが存在しません。" );
 			Application.Quit( );
@@ -155,11 +168,8 @@ public class Play : MonoBehaviour {
 		//Player
 		_data.player = data.createPlayer( );
 
-		if ( area == 0 ) {
-			_data.setActives( true );
-		} else {
-			_data.setActives( false );
-		}
+
+		_data.setActives( true );
 	}
 
 	void destroyArea( ) {
