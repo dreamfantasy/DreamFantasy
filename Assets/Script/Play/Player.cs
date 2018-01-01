@@ -68,7 +68,7 @@ public class Player : MonoBehaviour {
 
 	//Allowのプレハブを読み込む
 	void loadArrow( ) {
-		_allow = Resources.Load( Play.getPrefabDir( ) + "/Allow" ) as GameObject;
+		_allow = Resources.Load( Play.getPrefabDir( ) + "/Other/Allow" ) as GameObject;
 		_allow = Instantiate( _allow );
 		_allow.transform.position = Vector3.zero;
 		_allow.transform.parent = gameObject.transform;
@@ -76,7 +76,7 @@ public class Player : MonoBehaviour {
 
 	//予測線のプレハブ
 	void loadLine( ) {
-		_line = Resources.Load( Play.getPrefabDir( ) + "/Line" ) as GameObject;
+		_line = Resources.Load( Play.getPrefabDir( ) + "/Other/Line" ) as GameObject;
 		_line = Instantiate( _line );
 		_line.transform.parent = gameObject.transform;
 		_line.transform.position = Vector3.zero;

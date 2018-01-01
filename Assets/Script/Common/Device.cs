@@ -71,6 +71,7 @@ public class Device : MonoBehaviour {
 	}
 
 	void checkTouchPhaseTouch( ) {
+		Phase = PHASE.NONE;
 		switch ( Input.GetTouch( 0 ).phase ) {
 		case TouchPhase.Began:
 			Phase = PHASE.BEGAN;
@@ -82,11 +83,7 @@ public class Device : MonoBehaviour {
 			Phase = PHASE.MOVED;
 			break;
 		case TouchPhase.Ended:
-			if ( Phase == PHASE.ENDED ) {
-				Phase = PHASE.NONE;
-			} else {
-				Phase = PHASE.ENDED;
-			}
+			Phase = PHASE.ENDED;
 			break;
 		case TouchPhase.Canceled:
 			Phase = PHASE.CANCELED;
@@ -95,6 +92,7 @@ public class Device : MonoBehaviour {
 	}
 
 	void checkTouchPhaseMouse( ) {
+		Phase = PHASE.NONE;
 		if ( Input.GetMouseButton( 0 ) ) {
 			Phase = PHASE.MOVED;
 		}
@@ -102,11 +100,7 @@ public class Device : MonoBehaviour {
 			Phase = PHASE.BEGAN;
 		}
 		if ( Input.GetMouseButtonUp( 0 ) ) {
-			if ( Phase == PHASE.ENDED ) {
-				Phase = PHASE.NONE;
-			} else {
-				Phase = PHASE.ENDED;
-			}
+			Phase = PHASE.ENDED;
 		}
 		   
 	}

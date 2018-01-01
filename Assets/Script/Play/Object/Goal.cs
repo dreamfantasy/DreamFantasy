@@ -68,7 +68,7 @@ public class Goal : MonoBehaviour {
 	void addCollider( ) {
 		CircleCollider2D col = gameObject.AddComponent< CircleCollider2D >( );
 		col.offset = Vector2.down * 20;
-		col.radius = 100;
+		col.radius = 50;
 		col.isTrigger = true;
 	}
 

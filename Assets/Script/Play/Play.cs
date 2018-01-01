@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class Play : MonoBehaviour {
 	public enum BOARDOBJECT {
@@ -15,8 +16,8 @@ public class Play : MonoBehaviour {
 		WAIT,
 		PLAY,
 		STAGE_CLEAR,
-		GAME_CLEAR,
 		GAME_OVER,
+		TUTORIAL
 	};
 	//--------Inspecter定数------//
 	[ Range( 0, 300 ) ]
@@ -33,9 +34,10 @@ public class Play : MonoBehaviour {
 	GameObject _clear_ui;
 	GameObject _area_txt_ui;
 	PlayData _data;
-	int _count;
-	int _area;
-	int _stock;
+	Action act;
+	int _count = 0;
+	int _area = -1;
+	int _stock = MAX_STOCK;
 	
 
 
@@ -44,61 +46,93 @@ public class Play : MonoBehaviour {
 	void Awake( ) {
 		setRetireButton( );
 		createLimitMoveWall( );
-		loadAreaData( 0 );
+		loadAreaData( );
 		findStockUI( );
 		findGameClearUI( );
 		findAreaTxtUI( );
 	}
 
 	void Start( ) {
-		state = STATE.WAIT;
-		_area = 0;
-		_count = 0;
-		_stock = MAX_STOCK;
+		setState( STATE.WAIT );
 	}
 
 	void Update( ) {
+		act( );
 		_count++;
-		switch ( state ) {
+	}
+
+
+	//----------------Act--------------//
+	void setState( STATE value ) {
+		switch ( value ) {
 		case STATE.WAIT:
-			if ( !_area_txt_ui.activeSelf ) {
-				//エリア3/3を表示させる
-				_area_txt_ui.SetActive( true );
-				_area_txt_ui.GetComponent< Text >( ).text = getAreaString( );
-			}
-			if ( _count > START_WAIT_COUNT ) {
-				if ( Device.Instanse.Phase == Device.PHASE.ENDED ) {
-					//プレイヤーが操作できる状態に以降
-					Vector2 tmp = Device.Instanse.Pos;
-					_area_txt_ui.SetActive( false );
-					state = STATE.PLAY;
-					_count = 0;
-				}
-			}
+			_area_txt_ui.SetActive( false );
 			break;
 		case STATE.PLAY:
-			//プレイヤーが死亡
-			if ( _data.player.GetComponent< Player >( ).isFinished( ) ) {
-				reStart( );
-			}
-			//プレイヤーがゴールに行った
-			if ( _data.goal.GetComponent< Goal >( ).EnterPlayer ) {
-				state = STATE.STAGE_CLEAR;
-				_count = 0;
-			}
 			break;
 		case STATE.STAGE_CLEAR:
-			//次のエリアを読み込み
-			state = STATE.WAIT;
-			_count = 0;
-			_area++;
-			loadAreaData( _area );
+			_clear_ui.SetActive( false );
 			break;
-		case STATE.GAME_CLEAR:
-			if ( !_clear_ui.activeSelf ) {
-				_clear_ui.SetActive( true );
-			}
+		case STATE.GAME_OVER:
+
+			break;
+		case STATE.TUTORIAL:
+
+			break;
+		}
+
+		state = value;
+		_count = 0;
+
+		switch ( state ) {
+		case STATE.WAIT:
+			act = actOnWait;
+			_area_txt_ui.SetActive( true );
+			_area_txt_ui.GetComponent< Text >( ).text = getAreaString( );
+			break;
+		case STATE.PLAY:
+			act = actOnPlay;
+			break;
+		case STATE.STAGE_CLEAR:
+			act = actONStageClear;
+			_clear_ui.SetActive( true );
+			break;
+		case STATE.GAME_OVER:
+			act = actOnGameOver;
+			break;
+		case STATE.TUTORIAL:
+			act = actOnTutorial;
+			break;
+		}
+	}
+	
+	void actOnWait( ) {
+		if ( _count > START_WAIT_COUNT ) {
 			if ( Device.Instanse.Phase == Device.PHASE.ENDED ) {
+				//プレイヤーが操作できる状態に以降
+				setState( STATE.PLAY );
+			}
+		}
+	}
+
+	void actOnPlay( ) {
+		//プレイヤーが死亡
+		if ( _data.player.GetComponent< Player >( ).isFinished( ) ) {
+			reStart( );
+		}
+		//プレイヤーがゴールに行った
+		if ( _data.goal.GetComponent< Goal >( ).EnterPlayer ) {
+			setState( STATE.STAGE_CLEAR );
+		}
+	}
+
+	void actONStageClear( ) {
+		//次のエリアを読み込み
+		if ( Device.Instanse.Phase == Device.PHASE.ENDED ) {
+			if ( loadAreaData( ) ) {
+				setState( STATE.WAIT );
+			} else {
+				//クリア
 				if ( !Game.Instance.tutorial ) {
 					if ( Game.Instance.clear_stage < Game.Instance.stage ) {
 						Game.Instance.clear_stage = Game.Instance.stage;
@@ -107,13 +141,16 @@ public class Play : MonoBehaviour {
 				Game.Instance.tutorial = false;
 				Game.Instance.loadScene( Game.SCENE.SCENE_STAGESELECT );
 			}
-			break;
-		case STATE.GAME_OVER:
+		}
+	}
+
+	void actOnGameOver( ) {
 			if ( Device.Instanse.Phase == Device.PHASE.ENDED ) {
 				Game.Instance.loadScene( Game.SCENE.SCENE_STAGESELECT );
 			}
-			break;
-		}
+	}
+
+	void actOnTutorial( ) {
 	}
 
 	void reStart( ) {
@@ -141,22 +178,22 @@ public class Play : MonoBehaviour {
 
 	//----------------初期化系統----------------//
 
-	void loadAreaData( int area ) {
+	bool loadAreaData( ) {
+		_area++;
 		destroyArea( );
-		if ( area >= MAX_AREA ) {
-			state = STATE.GAME_CLEAR;
-			return;
+		if ( _area >= MAX_AREA ) {
+			return false;
 		}
 		_data = new PlayData( );
-		string path = getDataPath( Game.Instance.stage, area );
+		string path = getDataPath( Game.Instance.stage, _area );
 		if ( Game.Instance.tutorial ) {
-			path = getDataTutorialPath( area );
+			path = getDataTutorialPath( _area );
 		}
 		BoardData data = ( BoardData )Resources.Load( path );
 		if ( data == null ) {
 			print( "エリアのAssetが存在しません。" );
 			Application.Quit( );
-			return;
+			return false;
 		}
 		//----描画順に読み込む----//
 		//Bg( 代入しない )
@@ -172,6 +209,7 @@ public class Play : MonoBehaviour {
 
 
 		_data.setActives( true );
+		return true;
 	}
 
 	void destroyArea( ) {
@@ -197,7 +235,7 @@ public class Play : MonoBehaviour {
 	}
 
 	void createLimitMoveWall( ) {
-		GameObject prefab = Resources.Load< GameObject >( getPrefabDir( ) + "/BoxCol" );
+		GameObject prefab = Resources.Load< GameObject >( getPrefabDir( ) + "/Other/BoxCol" );
 		{//上
 			GameObject obj = Instantiate( prefab );
 			Transform trans = obj.GetComponent< Transform >( );
