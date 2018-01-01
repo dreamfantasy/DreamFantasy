@@ -38,6 +38,10 @@ public class Play : MonoBehaviour {
 	int _count = 0;
 	int _area = -1;
 	int _stock = MAX_STOCK;
+	//Tutorial
+	//int _tutorial_phase = 0;
+	//int _tutorial_line = 0;
+	//List< string[ ] > _tutorial_txt = new List< string[ ] >( );
 	
 
 
@@ -62,9 +66,9 @@ public class Play : MonoBehaviour {
 	}
 
 
-	//----------------Act--------------//
+	//-----------------------Act---------------------//
 	void setState( STATE value ) {
-		switch ( value ) {
+		switch ( state ) {
 		case STATE.WAIT:
 			_area_txt_ui.SetActive( false );
 			break;
@@ -74,10 +78,8 @@ public class Play : MonoBehaviour {
 			_clear_ui.SetActive( false );
 			break;
 		case STATE.GAME_OVER:
-
 			break;
 		case STATE.TUTORIAL:
-
 			break;
 		}
 
@@ -118,7 +120,11 @@ public class Play : MonoBehaviour {
 	void actOnPlay( ) {
 		//プレイヤーが死亡
 		if ( _data.player.GetComponent< Player >( ).isFinished( ) ) {
-			reStart( );
+			if ( reStart( ) ) {
+				setState( STATE.WAIT );
+			} else {
+				setState( STATE.GAME_OVER );
+			}
 		}
 		//プレイヤーがゴールに行った
 		if ( _data.goal.GetComponent< Goal >( ).EnterPlayer ) {
@@ -145,20 +151,22 @@ public class Play : MonoBehaviour {
 	}
 
 	void actOnGameOver( ) {
-			if ( Device.Instanse.Phase == Device.PHASE.ENDED ) {
-				Game.Instance.loadScene( Game.SCENE.SCENE_STAGESELECT );
-			}
+		if ( Device.Instanse.Phase == Device.PHASE.ENDED ) {
+			Game.Instance.loadScene( Game.SCENE.SCENE_STAGESELECT );
+		}
 	}
 
 	void actOnTutorial( ) {
 	}
 
-	void reStart( ) {
+	//----------------------/Act---------------------//
+	//--------------------Tutorial-------------------//
+	//-------------------/Tutorial-------------------//
+
+	bool reStart( ) {
 		_stock--;
 		if ( _stock < 0 ) {
-			_stock = 0;
-			state = STATE.GAME_OVER;
-			return;
+			return false;
 		}
 		for ( int i = 0; i < MAX_STOCK; i++ ) {
 			if ( _stock <= i ) {
@@ -166,6 +174,7 @@ public class Play : MonoBehaviour {
 			}
 		}
 		_data.reset( );
+		return true;
 	}
 
 	void retire( ) {
