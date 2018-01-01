@@ -17,6 +17,7 @@ public class Scenario : MonoBehaviour {
 		GameObject ui = GameObject.Find( "UI" );
 		_msg_text  = ui.transform.Find( "MsgBox/Text"  ).GetComponent< Text >( );
 		_name_text = ui.transform.Find( "NameBox/Text" ).GetComponent< Text >( );
+		ui.transform.Find( "Skip" ).GetComponent< Button >( ).onClick.AddListener( skip );
 		loadData( );
 	}
 
@@ -71,5 +72,9 @@ public class Scenario : MonoBehaviour {
 			return dir + "Tutorial";
 		}
 		return dir + Game.Instance.chapter.ToString( ) + "/" + Game.Instance.stage.ToString( );
+	}
+
+	void skip( ) {
+		Game.Instance.loadScene( Game.SCENE.SCENE_PLAY );
 	}
 }
