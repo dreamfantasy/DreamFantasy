@@ -100,7 +100,9 @@ public class Play : MonoBehaviour {
 			}
 			if ( Device.Instanse.Phase == Device.PHASE.ENDED ) {
 				if ( !Game.Instance.tutorial ) {
-					Game.Instance.clear_stage = Game.Instance.stage;
+					if ( Game.Instance.clear_stage < Game.Instance.stage ) {
+						Game.Instance.clear_stage = Game.Instance.stage;
+					}
 				}
 				Game.Instance.tutorial = false;
 				Game.Instance.loadScene( Game.SCENE.SCENE_STAGESELECT );

@@ -24,6 +24,7 @@ public class BoardDataManager : MonoBehaviour {
 		BoardData asset = ScriptableObject.CreateInstance< BoardData >( );
 		copy( Data, asset );
 		AssetDatabase.CreateAsset( asset, getAssetPath( ) );
+		AssetDatabase.SaveAssets( );
 	}
 
 	public void loadAsset( ) {
@@ -45,14 +46,19 @@ public class BoardDataManager : MonoBehaviour {
 			Debug.Log( "Assetを生成/保存しました" );
 			return;
 		}
+		//Saveがうまくいかないので削除して生成する
+		AssetDatabase.DeleteAsset( path );
+		createAsset( );
+		/*
 		BoardData asset = AssetDatabase.LoadAssetAtPath< BoardData >( path );
 		if ( asset == null ) {
-			AssetDatabase.DeleteAsset( path );
 			saveAsset( );
 			return;
 		}
 		copy( Data, asset );
 		AssetDatabase.SaveAssets( );
+		AssetDatabase.Refresh( );
+		*/
 		Debug.Log( "Assetをセーブしました" );
 	}
 
@@ -62,7 +68,8 @@ public class BoardDataManager : MonoBehaviour {
 	
 	//--------------------------------------------------//
 	public void init( ) {
-		Data = new BoardData( );
+		Data = ScriptableObject.CreateInstance< BoardData >( );
+		eraseGameObject( );
 	}
 
 	void copy( BoardData from, BoardData to ) {

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Switch : MonoBehaviour {
 	public bool enable { get; private set; }
-	private Color color_on  = new Color( 0.5f, 1, 1 );
+	private Color color_on  = new Color( 0.9f, 1, 1 );
 	private Color color_off = new Color( 1, 0.4f, 0.4f );
 
 	void Awake( ) {

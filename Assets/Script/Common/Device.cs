@@ -82,7 +82,11 @@ public class Device : MonoBehaviour {
 			Phase = PHASE.MOVED;
 			break;
 		case TouchPhase.Ended:
-			Phase = PHASE.ENDED;
+			if ( Phase == PHASE.ENDED ) {
+				Phase = PHASE.NONE;
+			} else {
+				Phase = PHASE.ENDED;
+			}
 			break;
 		case TouchPhase.Canceled:
 			Phase = PHASE.CANCELED;
@@ -98,7 +102,11 @@ public class Device : MonoBehaviour {
 			Phase = PHASE.BEGAN;
 		}
 		if ( Input.GetMouseButtonUp( 0 ) ) {
-			Phase = PHASE.ENDED;
+			if ( Phase == PHASE.ENDED ) {
+				Phase = PHASE.NONE;
+			} else {
+				Phase = PHASE.ENDED;
+			}
 		}
 		   
 	}
