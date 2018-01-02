@@ -18,6 +18,7 @@ public class Device : MonoBehaviour {
 	System.Action checkPos;
 	System.Action checkTouchPhase;
 
+	GameObject _effect;
 	int _stop_count;
 
 	void Awake( ) {
@@ -30,15 +31,29 @@ public class Device : MonoBehaviour {
 			checkPos = checkPosMouse;
 			checkTouchPhase = checkTouchPhaseMouse;
 		}
+
+		//effect
+		GameObject prefab = Resources.Load< GameObject >( "Common/Prefab/Effect/Touch" );
+		_effect = Instantiate( prefab );
+		DontDestroyOnLoad( _effect );
+		_effect.transform.position = Vector3.left * 2000;
 	}
 
+	void Start( ) {
+	}
 	void Update( ) {
 		if ( _stop_count > 0 ) {
 			_stop_count--;
 			return;
 		}
+		PHASE before = Phase;
 		checkPos( );
 		checkTouchPhase( );
+		//エフェクト
+		if ( before == PHASE.BEGAN ) {
+			_effect.transform.position = Pos;
+			_effect.GetComponent< EffectTouch >( ).touch( );
+		}
 	}
 
 

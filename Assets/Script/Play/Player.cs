@@ -63,6 +63,8 @@ public class Player : MonoBehaviour {
 		}
 		_col = true;
 		damage( );
+		//Effect
+		_play.startEffect( collision.contacts[ 0 ].point );
 	}
 
 

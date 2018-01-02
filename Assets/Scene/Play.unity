@@ -659,6 +659,24 @@ Camera:
   m_PrefabParentObject: {fileID: 20420635403884938, guid: d8fa1f2ebdc265e408859a2522aefa5b,
     type: 2}
   m_PrefabInternal: {fileID: 876616067}
+--- !u!114 &898475733
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6905763cd28f26440b6bac65a81fb0bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Bg: {fileID: 0}
+  _Player:
+    pos: {x: 0, y: 0, z: 0}
+  _Goal:
+    pos: {x: 0, y: 0, z: 0}
+  _Wall: []
+  _Switch: []
 --- !u!1 &1063849836
 GameObject:
   m_ObjectHideFlags: 0

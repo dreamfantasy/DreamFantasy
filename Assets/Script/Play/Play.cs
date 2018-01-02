@@ -33,6 +33,7 @@ public class Play : MonoBehaviour {
 	GameObject[ ] _stock_ui;
 	GameObject _clear_ui;
 	GameObject _area_txt_ui;
+	GameObject _col_effect;
 	PlayData _data;
 	Action act;
 	int _count = 0;
@@ -51,6 +52,7 @@ public class Play : MonoBehaviour {
 		setRetireButton( );
 		createLimitMoveWall( );
 		loadAreaData( );
+		loadColEffect( );
 		findStockUI( );
 		findGameClearUI( );
 		findAreaTxtUI( );
@@ -274,6 +276,10 @@ public class Play : MonoBehaviour {
 		}
 	}
 
+	void loadColEffect( ) {
+		_col_effect = Instantiate( Resources.Load< GameObject >( "Play/Prefab/Effect/Col" ) );
+	}
+
 	void findStockUI( ) {	
 		_stock_ui = new GameObject[ MAX_STOCK ];
 		for ( int i = 0; i < MAX_STOCK; i++ ) {
@@ -363,5 +369,14 @@ public class Play : MonoBehaviour {
 	public static string getDataTutorialPath( int area ) {
 		return  getDataTutorialDir( ) + area.ToString( );
 	}
+	//-------------/Public static-------------------------//
+	//-----------------Effect-------------------------//
+
+	public void startEffect( Vector3 pos ) {
+		_col_effect.transform.position = pos;
+		_col_effect.GetComponent< ParticleSystem >( ).Play( );
+	}
+
+
 	//------------------------------------------------//
 }
