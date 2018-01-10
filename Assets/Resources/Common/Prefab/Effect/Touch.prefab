@@ -52,8 +52,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64cd55a2c6705fd4ea6354041cadfe1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LIFE_TIME: 201
-  MAX_SIZE: 3.3
+  LIFE_TIME: 50
+  MAX_SIZE: 3
 --- !u!212 &212950028884486702
 SpriteRenderer:
   m_ObjectHideFlags: 1
