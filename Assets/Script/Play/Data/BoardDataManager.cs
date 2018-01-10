@@ -22,9 +22,8 @@ public class BoardDataManager : MonoBehaviour {
 		}
 
 		BoardData asset = ScriptableObject.CreateInstance< BoardData >( );
-		copy( Data, asset );
+		asset.copy( Data );
 		AssetDatabase.CreateAsset( asset, getAssetPath( ) );
-		AssetDatabase.SaveAssets( );
 	}
 
 	public void loadAsset( ) {
@@ -32,7 +31,7 @@ public class BoardDataManager : MonoBehaviour {
 		if ( asset == null ) {
 			return;
 		}
-		copy( asset, Data );
+		Data.copy( asset );
 		eraseGameObject( );
 		createGameObject( );
 		Debug.Log( "Assetをロードしました" );
@@ -49,16 +48,7 @@ public class BoardDataManager : MonoBehaviour {
 		//Saveがうまくいかないので削除して生成する
 		AssetDatabase.DeleteAsset( path );
 		createAsset( );
-		/*
-		BoardData asset = AssetDatabase.LoadAssetAtPath< BoardData >( path );
-		if ( asset == null ) {
-			saveAsset( );
-			return;
-		}
-		copy( Data, asset );
-		AssetDatabase.SaveAssets( );
-		AssetDatabase.Refresh( );
-		*/
+
 		Debug.Log( "Assetをセーブしました" );
 	}
 
@@ -72,27 +62,18 @@ public class BoardDataManager : MonoBehaviour {
 		eraseGameObject( );
 	}
 
-	void copy( BoardData from, BoardData to ) {
-		to._Bg = from._Bg;
-		to._Player = from._Player;
-		to._Goal = from._Goal;
-		to._Wall = from._Wall;
-		to._Switch = from._Switch;
-	}
-
-
 	string getAssetPath( ) {
 		if ( Tutorial ) {
-			return "Assets/Resources/" + Play.getDataTutorialPath( Area ) + ".asset";
+			return Play.getAssetTutorialPath( Area );
 		}
-		return "Assets/Resources/" + Play.getDataPath( Stage, Area ) + ".asset";
+		return Play.getAssetPath( Stage, Area );
 	}
 
 	string getAssetDir( ) {
 		if ( Tutorial ) {
-			return "Assets/Resources/" + Play.getDataTutorialDir( );
+			return Play.getAssetTutorialDir( );
 		}
-		return "Assets/Resources/" + Play.getDataDir( Stage );
+		return Play.getAssetDir( Stage );
 	}
 
 	void createGameObject( ) {

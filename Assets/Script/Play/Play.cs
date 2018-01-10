@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEditor;
 using System;
 
 public class Play : MonoBehaviour {
@@ -21,7 +20,7 @@ public class Play : MonoBehaviour {
 	};
 	//--------Inspecter定数------//
 	[ Range( 0, 300 ) ]
-	public int START_WAIT_COUNT = 60;
+	public int START_WAIT_COUNT = 10;
 
 	//-----------定数------------//
 	public const int MAX_STAGE = 9;
@@ -32,29 +31,35 @@ public class Play : MonoBehaviour {
 	public STATE state { get; private set; }
 	GameObject[ ] _stock_ui;
 	GameObject _clear_ui;
+	GameObject _faild_ui;
 	GameObject _area_txt_ui;
 	GameObject _col_effect;
 	PlayData _data;
 	Action act;
 	int _count = 0;
-	int _area = -1;
+	public int area = -1;
 	int _stock = MAX_STOCK;
 	//Tutorial
 	//int _tutorial_phase = 0;
 	//int _tutorial_line = 0;
 	//List< string[ ] > _tutorial_txt = new List< string[ ] >( );
+	BoardData data;
 	
 
 
 	//-----------関数------------//
 
 	void Awake( ) {
+		if ( Game.Instance.tutorial ) {
+			gameObject.AddComponent< PlayTutorial >( );
+		}
 		setRetireButton( );
 		createLimitMoveWall( );
 		loadAreaData( );
 		loadColEffect( );
 		findStockUI( );
 		findGameClearUI( );
+		findGameOverUI( );
 		findAreaTxtUI( );
 	}
 
@@ -80,6 +85,7 @@ public class Play : MonoBehaviour {
 			_clear_ui.SetActive( false );
 			break;
 		case STATE.GAME_OVER:
+			_faild_ui.SetActive( false );
 			break;
 		case STATE.TUTORIAL:
 			break;
@@ -103,6 +109,7 @@ public class Play : MonoBehaviour {
 			break;
 		case STATE.GAME_OVER:
 			act = actOnGameOver;
+			_faild_ui.SetActive( true );
 			break;
 		case STATE.TUTORIAL:
 			act = actOnTutorial;
@@ -154,7 +161,12 @@ public class Play : MonoBehaviour {
 
 	void actOnGameOver( ) {
 		if ( Device.Instanse.Phase == Device.PHASE.ENDED ) {
-			Game.Instance.loadScene( Game.SCENE.SCENE_STAGESELECT );
+			if ( Game.Instance.tutorial ) {
+					Game.Instance.reset( );
+					Game.Instance.loadScene( Game.SCENE.SCENE_TITLE );
+			} else {
+				Game.Instance.loadScene( Game.SCENE.SCENE_STAGESELECT );
+			}
 		}
 	}
 
@@ -162,6 +174,12 @@ public class Play : MonoBehaviour {
 	}
 
 	//----------------------/Act---------------------//
+
+	public Player getPlayer( ) {
+		return _data.player.GetComponent< Player >( );
+	}
+		
+		
 	//--------------------Tutorial-------------------//
 	//-------------------/Tutorial-------------------//
 
@@ -184,27 +202,31 @@ public class Play : MonoBehaviour {
 	}
 
 	string getAreaString( ) {
-		return "Area " + ( _area + 1 ).ToString( ) + "/" + MAX_AREA.ToString( );
+		return "Area " + ( area + 1 ).ToString( ) + "/" + MAX_AREA.ToString( );
 	}
 
 	//----------------初期化系統----------------//
 
 	bool loadAreaData( ) {
-		_area++;
+		area++;
 		destroyArea( );
-		if ( _area >= MAX_AREA ) {
+		if ( area >= MAX_AREA ) {
 			return false;
 		}
 		_data = new PlayData( );
-		string path = getDataPath( Game.Instance.stage, _area );
+		string path = getAssetPath( Game.Instance.stage, area );
 		if ( Game.Instance.tutorial ) {
-			path = getDataTutorialPath( _area );
+			path = getAssetTutorialPath( area );
 		}
-		BoardData data = ( BoardData )Resources.Load( path );
-		if ( data == null ) {
-			print( "エリアのAssetが存在しません。" );
-			Application.Quit( );
-			return false;
+		{//Asset
+			data = ScriptableObject.CreateInstance< BoardData >( );
+			BoardData asset = AssetDatabase.LoadAssetAtPath< BoardData >( path ); //Resources.Load< BoardData >( path );
+			if ( asset == null ) {
+				print( "エリアのAssetが存在しません。" );
+				Application.Quit( );
+				return false;
+			}
+			data.copy( asset );
 		}
 		//----描画順に読み込む----//
 		//Bg( 代入しない )
@@ -292,6 +314,11 @@ public class Play : MonoBehaviour {
 		_clear_ui.SetActive( false );
 	}
 
+	void findGameOverUI( ) {
+		_faild_ui = GameObject.Find( "UI" ).transform.Find( "GameOver" ).gameObject;
+		_faild_ui.SetActive( false );
+	}
+
 	void findAreaTxtUI( ) {
 		_area_txt_ui = GameObject.Find( "UI" ).transform.Find( "AreaTxt" ).gameObject;
 		_area_txt_ui.SetActive( false );
@@ -354,20 +381,20 @@ public class Play : MonoBehaviour {
 		return path;
 	}
 
-	public static string getDataDir( int stage ) {
-		return "Play/Data/Board/0/" + stage.ToString( );
+	public static string getAssetDir( int stage ) {
+		return "Assets/Resources/Play/Data/Board/0/" + stage.ToString( );
 	}
 
-	public static string getDataPath( int stage, int area ) {
-		return  getDataDir( stage ) + "/" + area.ToString( );
+	public static string getAssetPath( int stage, int area ) {
+		return  getAssetDir( stage ) + "/" + area.ToString( ) + ".asset";
 	}
 
-	public static string getDataTutorialDir( ) {
-		return "Play/Data/Board/Tutorial/";
+	public static string getAssetTutorialDir( ) {
+		return "Assets/Resources/Play/Data/Board/Tutorial";
 	}
 
-	public static string getDataTutorialPath( int area ) {
-		return  getDataTutorialDir( ) + area.ToString( );
+	public static string getAssetTutorialPath( int area ) {
+		return  getAssetTutorialDir( ) + "/" + area.ToString( ) + ".asset";
 	}
 	//-------------/Public static-------------------------//
 	//-----------------Effect-------------------------//

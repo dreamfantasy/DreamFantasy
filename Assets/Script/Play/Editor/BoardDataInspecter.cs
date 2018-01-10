@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
+	/*
 [CustomEditor( typeof( BoardData ), true ) ]
 public class BoardDataInspecter : Editor {
 	bool folder_wall = false;
@@ -28,4 +29,5 @@ public class BoardDataInspecter : Editor {
 		}
 	}
 }
+	*/
 

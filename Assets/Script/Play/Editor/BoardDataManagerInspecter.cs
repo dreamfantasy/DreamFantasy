@@ -18,19 +18,21 @@ public class BoardDataManagerInspecter : Editor {
 
 		if ( targetComponent.Data ) {
 			{//player
-				string label = targetComponent.Data._Player != null ? "有" : "無";
+				string label = targetComponent.Data._player != null ? "有" : "無";
 				EditorGUILayout.LabelField( "Player", label );
 			}
 			{//Goal
-				string label = targetComponent.Data._Goal != null ? "有" : "無";
+				string label = targetComponent.Data._goal != null ? "有" : "無";
 				EditorGUILayout.LabelField( "Goal", label );
 			}
 			{//wall
-				string label = "Num:" + targetComponent.Data._Wall.Count;
+				int num = targetComponent.Data._walls.Count;
+				num    += targetComponent.Data._wall_moves.Count;
+				string label = "Num:" + num;
 				EditorGUILayout.LabelField( "Wall", label );
 			}
 			{//switch
-				string label = "Num:" + targetComponent.Data._Switch.Count;
+				string label = "Num:" + targetComponent.Data._switchs.Count;
 				EditorGUILayout.LabelField( "Switch", label );
 			}
 			//button

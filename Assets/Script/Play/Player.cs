@@ -14,6 +14,8 @@ public class Player : MonoBehaviour {
 	[ Range( 0.0001f, 0.005f ) ]
 	public float ALLOW_SIZE_RATIO = 0.001f;
 	
+	public bool Lock { get; set; }
+
 	enum ACTION {
 		WAIT,
 		NORMAL,
@@ -43,6 +45,7 @@ public class Player : MonoBehaviour {
 
 	//初期化処理( Awake後 )
 	void Start( ) {
+		Lock = false;
 		_start_pos = transform.position;
 		_allow.transform.localScale = Vector3.zero;
 		_hp = _sprites.Length;
@@ -52,6 +55,9 @@ public class Player : MonoBehaviour {
 
 	//更新処理
 	void Update( ) {
+		if ( Lock ) {
+			return;
+		}
 		Action( );
 		_col = false;
 	}
