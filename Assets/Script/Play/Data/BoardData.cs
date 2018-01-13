@@ -171,20 +171,23 @@ public class BoardData : ScriptableObject {
 		//rot
 		to.rot = from.GetComponent< Transform >( ).rotation;
 		//Size
-		to.size = from.GetComponent< TextureSprite >( ).rect.size;  
+		to.size = from.transform.localScale;  
 		//Sprite
-		to.sprite = from.GetComponent< TextureSprite >( ).texture;
+		to.texture = from.GetComponent< MeshRenderer >( ).materials[ 0 ].mainTexture;
 	}
 	public static void copy( WallData from, GameObject to ) {
 		copy( ( CommonData )from, to );
 		//Rot
 		to.GetComponent< Transform >( ).rotation = from.rot;
-		//Size
-		Vector3 size = from.size;
-		to.transform.localScale = size;
-		to.GetComponent< TextureSprite >( ).rect.size = size;
 		//Sprite
-		to.GetComponent< TextureSprite >( ).texture = from.sprite; //Sprite
+		Material mat = new Material( Shader.Find( "Unlit/Transparent" ) );
+		mat.SetTexture( "_MainTex", from.texture );
+		//Size
+		int texture_size = 256;
+		to.transform.localScale = from.size;
+		mat.SetTextureScale( "_MainTex", from.size / texture_size );
+
+		to.GetComponent< MeshRenderer >( ).material = mat;
 	}
 	//-----/Wall-----//
 
@@ -309,7 +312,7 @@ public class BoardData : ScriptableObject {
 	public class WallData : CommonData {
 		public Quaternion rot;
 		public Vector2 size;
-		public Texture sprite;
+		public Texture texture;
 	}
 
 	[System.Serializable]
