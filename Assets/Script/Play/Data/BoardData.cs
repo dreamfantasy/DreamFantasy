@@ -168,16 +168,24 @@ public class BoardData : ScriptableObject {
 	//------Wall-----//
 	public static void copy( GameObject from, WallData to ) {
 		copy( from, ( CommonData )to );
-		to.rot = from.GetComponent< Transform >( ).rotation;  //rot
+		//rot
+		to.rot = from.GetComponent< Transform >( ).rotation;
+		//Size
+		to.size = from.GetComponent< TextureSprite >( ).rect.size;  
+		//Sprite
 		SpriteRenderer sr = from.GetComponent< SpriteRenderer >( );
-		to.size   = sr.size;  //Size
-		to.sprite = sr.sprite;//Sprite
+		to.sprite = sr.sprite;
 	}
 	public static void copy( WallData from, GameObject to ) {
 		copy( ( CommonData )from, to );
-		to.GetComponent< Transform >( ).rotation = from.rot;  //rot
+		//Rot
+		to.GetComponent< Transform >( ).rotation = from.rot;
+		//Size
+		Vector3 size = from.size;
+		to.transform.localScale = size;
+		to.GetComponent< TextureSprite >( ).rect.size = size;
+		//Sprite
 		SpriteRenderer sr = to.GetComponent< SpriteRenderer >( );
-		sr.size   = from.size;   //Size
 		sr.sprite = from.sprite; //Sprite
 	}
 	//-----/Wall-----//

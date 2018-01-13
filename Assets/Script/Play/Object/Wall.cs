@@ -12,8 +12,9 @@ public class Wall : MonoBehaviour {
 
 	void initCol( ) {
 		BoxCollider2D col = gameObject.GetComponent< BoxCollider2D >( );
-		col.size = GetComponent< SpriteRenderer >( ).size;
-		col.offset = Vector2.up * col.size.y * 0.5f;
-		col.edgeRadius = 5.0f;
+		//col.size = GetComponent< SpriteRenderer >( ).size;
+		//col.offset = Vector2.up * col.size.y * 0.5f;
+		//col.edgeRadius = 5.0f;
+		col.edgeRadius = 0.01f;
 	}
 }
