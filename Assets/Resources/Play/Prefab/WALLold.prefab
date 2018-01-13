@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 212336180214076296}
   - component: {fileID: 114034294455105762}
   m_Layer: 0
-  m_Name: WALL
+  m_Name: WALLold
   m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -93,3 +93,4 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0

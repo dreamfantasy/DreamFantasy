@@ -9,6 +9,7 @@ TagManager:
   - Goal
   - Switch
   - Bg
+  - Boss
   layers:
   - Default
   - TransparentFX

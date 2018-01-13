@@ -19,5 +19,4 @@ MonoBehaviour:
   _walls: []
   _wall_moves: []
   _switchs: []
-  _boss:
-  - {fileID: 0}
+  _boss: []

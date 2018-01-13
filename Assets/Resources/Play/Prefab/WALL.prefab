@@ -23,8 +23,9 @@ GameObject:
   - component: {fileID: 23886712356820604}
   - component: {fileID: 114376655474476906}
   - component: {fileID: 61166520143158588}
+  - component: {fileID: 114637032979986004}
   m_Layer: 0
-  m_Name: Quad
+  m_Name: Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -128,3 +129,14 @@ MonoBehaviour:
   quadMesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
   sortingOrder: 0
   sortingLayerName: Default
+--- !u!114 &114637032979986004
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1787385100646824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0cfa0b5e5573a547b1ce749eb5a31f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
