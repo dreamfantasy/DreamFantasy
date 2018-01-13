@@ -17,7 +17,7 @@ public class BoardDataManagerInspecter : Editor {
 
 
 		if ( targetComponent.Data ) {
-			{//player
+			{//Player
 				string label = targetComponent.Data._player != null ? "有" : "無";
 				EditorGUILayout.LabelField( "Player", label );
 			}
@@ -25,15 +25,20 @@ public class BoardDataManagerInspecter : Editor {
 				string label = targetComponent.Data._goal != null ? "有" : "無";
 				EditorGUILayout.LabelField( "Goal", label );
 			}
-			{//wall
+			{//Wall
 				int num = targetComponent.Data._walls.Count;
 				num    += targetComponent.Data._wall_moves.Count;
 				string label = "Num:" + num;
 				EditorGUILayout.LabelField( "Wall", label );
 			}
-			{//switch
+			{//Switch
 				string label = "Num:" + targetComponent.Data._switchs.Count;
 				EditorGUILayout.LabelField( "Switch", label );
+			}
+			
+			{//Boss
+				string label = "Num:" + targetComponent.Data._boss.Length;
+				EditorGUILayout.LabelField( "Boss", label );
 			}
 			//button
 			if ( GUILayout.Button( "更新" ) ) {

@@ -19,3 +19,4 @@ MonoBehaviour:
   _walls: []
   _wall_moves: []
   _switchs: []
+  _boss: []
