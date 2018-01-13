@@ -18,6 +18,7 @@ public class Scenario : MonoBehaviour {
 		_msg_text  = ui.transform.Find( "MsgBox/Text"  ).GetComponent< Text >( );
 		_name_text = ui.transform.Find( "NameBox/Text" ).GetComponent< Text >( );
 		ui.transform.Find( "Skip" ).GetComponent< Button >( ).onClick.AddListener( skip );
+		Instantiate( Resources.Load< GameObject >( "Scenario/Prefab/Sound/Forest" ) );
 		loadData( );
 	}
 
