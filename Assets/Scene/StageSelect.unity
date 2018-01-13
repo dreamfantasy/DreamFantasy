@@ -645,7 +645,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!212 &1005494005
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1032,12 +1032,12 @@ Prefab:
     - target: {fileID: 20420635403884938, guid: d8fa1f2ebdc265e408859a2522aefa5b,
         type: 2}
       propertyPath: m_NormalizedViewPortRect.x
-      value: 0.11201522
+      value: 0.34759247
       objectReference: {fileID: 0}
     - target: {fileID: 20420635403884938, guid: d8fa1f2ebdc265e408859a2522aefa5b,
         type: 2}
       propertyPath: m_NormalizedViewPortRect.width
-      value: 0.77596956
+      value: 0.30481502
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d8fa1f2ebdc265e408859a2522aefa5b, type: 2}
