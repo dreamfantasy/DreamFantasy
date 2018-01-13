@@ -33,7 +33,7 @@ public class Title : MonoBehaviour {
 		float alpha = ( float )Math.Abs( Math.Sin( _count * ALPHA_SPEED ) );
 		_touch.color = new Color( 1, 1, 1, alpha );
 
-		if ( _movie_tex.isPlaying ) {
+		if ( _movie_tex != null && _movie_tex.isPlaying ) {
 			//タッチで動画を止める
 			if ( Device.Instanse.Phase == Device.PHASE.ENDED ) {
 				stopMovie( );
@@ -56,11 +56,17 @@ public class Title : MonoBehaviour {
 	}
 
 	void playMovie( ) {
+		if ( _movie_tex == null ) {
+			return;
+		}
 		_movie.SetActive( true );
 		_movie_tex.Play( );
 	}
 
 	void stopMovie( ) {
+		if ( _movie_tex == null ) {
+			return;
+		}
 		_count = 0;
 		_movie_tex.Stop( );
 		_movie.SetActive( false );

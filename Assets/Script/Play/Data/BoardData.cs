@@ -17,7 +17,7 @@ public class BoardData : ScriptableObject {
 	[SerializeField]
     public List< SwitchData > _switchs = new List< SwitchData >( );
 	[SerializeField]
-    public GameObject[ ] _boss;
+	public GameObject[ ] _boss = new GameObject[ 0 ];
 	
 	public void serchBoardObjects( ) {
 		Debug.Log( "Assetを更新しました" );
@@ -173,8 +173,7 @@ public class BoardData : ScriptableObject {
 		//Size
 		to.size = from.GetComponent< TextureSprite >( ).rect.size;  
 		//Sprite
-		SpriteRenderer sr = from.GetComponent< SpriteRenderer >( );
-		to.sprite = sr.sprite;
+		to.sprite = from.GetComponent< TextureSprite >( ).texture;
 	}
 	public static void copy( WallData from, GameObject to ) {
 		copy( ( CommonData )from, to );
@@ -185,8 +184,7 @@ public class BoardData : ScriptableObject {
 		to.transform.localScale = size;
 		to.GetComponent< TextureSprite >( ).rect.size = size;
 		//Sprite
-		SpriteRenderer sr = to.GetComponent< SpriteRenderer >( );
-		sr.sprite = from.sprite; //Sprite
+		to.GetComponent< TextureSprite >( ).texture = from.sprite; //Sprite
 	}
 	//-----/Wall-----//
 
@@ -311,7 +309,7 @@ public class BoardData : ScriptableObject {
 	public class WallData : CommonData {
 		public Quaternion rot;
 		public Vector2 size;
-		public Sprite sprite;
+		public Texture sprite;
 	}
 
 	[System.Serializable]

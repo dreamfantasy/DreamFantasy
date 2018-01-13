@@ -63,29 +63,28 @@ public class TextureSprite : MonoBehaviour
     {
         // UVが同じならば、再利用する
         var hashCode = uvRect.GetHashCode();
-        if (storedMesh.ContainsKey(hashCode) && storedMesh[hashCode] != null)
-        {
-            return storedMesh[hashCode];
-        }
-        else
-        {
-            // UVを設定したメッシュを生成
-            var mesh = Instantiate(quadMesh);
-            if (storedMesh.ContainsKey(hashCode) == false)
-                storedMesh.Add(hashCode, mesh);
-            else
-                storedMesh[hashCode] = mesh;
+		if ( storedMesh.ContainsKey( hashCode ) && storedMesh[ hashCode ] != null ) {
+			return storedMesh[ hashCode ];
+		} else if ( quadMesh != null ) {
+			// UVを設定したメッシュを生成
+			var mesh = Instantiate( quadMesh );
+			if ( storedMesh.ContainsKey( hashCode ) == false )
+				storedMesh.Add( hashCode, mesh );
+			else
+				storedMesh[ hashCode ] = mesh;
 
-            sharedUvs.Clear();
-            sharedUvs.Add(uvRect.min);
-            sharedUvs.Add(uvRect.max);
-            sharedUvs.Add(new Vector2(uvRect.x + uvRect.width, uvRect.y));
-            sharedUvs.Add(new Vector2(uvRect.x, uvRect.y + uvRect.height));
+			sharedUvs.Clear( );
+			sharedUvs.Add( uvRect.min );
+			sharedUvs.Add( uvRect.max );
+			sharedUvs.Add( new Vector2( uvRect.x + uvRect.width, uvRect.y ) );
+			sharedUvs.Add( new Vector2( uvRect.x, uvRect.y + uvRect.height ) );
 
-            mesh.SetUVs(0, sharedUvs);
+			mesh.SetUVs( 0, sharedUvs );
 
-            return mesh;
-        }
+			return mesh;
+		} else {
+			return new Mesh( );
+		}
     }
 
     /// <summary>

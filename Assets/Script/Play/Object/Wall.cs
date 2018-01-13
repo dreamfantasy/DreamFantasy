@@ -15,6 +15,6 @@ public class Wall : MonoBehaviour {
 		//col.size = GetComponent< SpriteRenderer >( ).size;
 		//col.offset = Vector2.up * col.size.y * 0.5f;
 		//col.edgeRadius = 5.0f;
-		col.edgeRadius = 0.01f;
+		//col.edgeRadius = 0.01f;
 	}
 }

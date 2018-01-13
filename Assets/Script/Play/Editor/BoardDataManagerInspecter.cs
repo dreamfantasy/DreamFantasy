@@ -16,7 +16,7 @@ public class BoardDataManagerInspecter : Editor {
 		}
 
 
-		if ( targetComponent.Data ) {
+		if ( targetComponent.Data != null ) {
 			{//Player
 				string label = targetComponent.Data._player != null ? "有" : "無";
 				EditorGUILayout.LabelField( "Player", label );
