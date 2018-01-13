@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using UnityEditor;
 using System;
 
 public class Play : MonoBehaviour {
@@ -231,7 +230,12 @@ public class Play : MonoBehaviour {
 		}
 		{//Asset
 			data = ScriptableObject.CreateInstance< BoardData >( );
-			BoardData asset = AssetDatabase.LoadAssetAtPath< BoardData >( path ); //Resources.Load< BoardData >( path );
+			//BoardData asset = AssetDatabase.LoadAssetAtPath< BoardData >( path ); //Resources.Load< BoardData >( path );
+			string[ ] div = { "Resources/", ".asset" };
+			string[ ] tmp = path.Split( div, StringSplitOptions.None );
+			path = tmp[ 1 ];
+			BoardData asset = Resources.Load< BoardData >( path );
+
 			if ( asset == null ) {
 				print( "エリアのAssetが存在しません。" );
 				Application.Quit( );

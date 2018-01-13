@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
-using UnityEditor;
-using UnityEditor.Callbacks;
-using UnityEditor.Events;
 using System;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
-[ExecuteInEditMode( )]
+[ExecuteInEditMode]
 public class EffectTouch : MonoBehaviour {
 	[Range( 1, 500 )]
 	public int LIFE_TIME = 1;
@@ -31,7 +31,9 @@ public class EffectTouch : MonoBehaviour {
 		add_alpha = 1.0f / LIFE_TIME;
 		sp.color = new Color( 1, 1, 1, 1 );
 		if ( !Application.isPlaying ) {
+			#if UNITY_EDITOR
 			EditorApplication.update += Update;
+			#endif
 		}
 	}
 

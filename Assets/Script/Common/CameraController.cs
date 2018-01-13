@@ -1,7 +1,5 @@
 ﻿using System.Collections;
 using UnityEngine;
-//using UnityEditor.SceneManagement;
-using UnityEditor;
 
 [ExecuteInEditMode]
 public class CameraController : MonoBehaviour {

@@ -10,7 +10,7 @@ public class Title : MonoBehaviour {
 	//------------------//
 	public GameObject _movie;
 	SpriteRenderer _touch;
-	MovieTexture _movie_tex;
+//	MovieTexture _movie_tex;
 	int _count = 0;
 
 	void Awake( ) {
@@ -19,11 +19,11 @@ public class Title : MonoBehaviour {
 			print( "eroor:touch is null" );
 			Application.Quit( );
 		}
-		_movie_tex = _movie.GetComponent< MeshRenderer >( ).material.mainTexture as MovieTexture;
-		if ( !_movie_tex ) {
-			print( "eroor:movie_tex is null" );
-			Application.Quit( );
-		}
+		//_movie_tex = _movie.GetComponent< MeshRenderer >( ).material.mainTexture as MovieTexture;
+		//if ( !_movie_tex ) {
+		//	print( "eroor:movie_tex is null" );
+		//	Application.Quit( );
+		//}
 	}
 
 	void Start( ) {
@@ -33,16 +33,16 @@ public class Title : MonoBehaviour {
 		float alpha = ( float )Math.Abs( Math.Sin( _count * ALPHA_SPEED ) );
 		_touch.color = new Color( 1, 1, 1, alpha );
 
-		if ( _movie_tex != null && _movie_tex.isPlaying ) {
+//		if ( false /*_movie_tex != null && _movie_tex.isPlaying */ ) {
 			//タッチで動画を止める
-			if ( Device.Instanse.Phase == Device.PHASE.ENDED ) {
-				stopMovie( );
-			}
-		} else {
+			//if ( Device.Instanse.Phase == Device.PHASE.ENDED ) {
+			//	stopMovie( );
+			//}
+	//	} else {
 			//一定時間放置でムービー再生
-			if ( _count > MOVIE_COUNT ) {
-				playMovie( );
-			}
+			//if ( _count > MOVIE_COUNT ) {
+			//	playMovie( );
+			//}
 			//タッチで次のシーン
 			if ( Device.Instanse.Phase == Device.PHASE.ENDED ) {
 				if ( Game.Instance.tutorial ) {
@@ -51,24 +51,28 @@ public class Title : MonoBehaviour {
 					Game.Instance.loadScene( Game.SCENE.SCENE_STAGESELECT );
 				}
 			}
-		}
-		_count++;
+		//}
+		//_count++;
 	}
 
 	void playMovie( ) {
+		/*
 		if ( _movie_tex == null ) {
 			return;
 		}
 		_movie.SetActive( true );
 		_movie_tex.Play( );
+		*/
 	}
 
 	void stopMovie( ) {
+		/*
 		if ( _movie_tex == null ) {
 			return;
 		}
 		_count = 0;
 		_movie_tex.Stop( );
 		_movie.SetActive( false );
+		*/
 	}
 }

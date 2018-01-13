@@ -1,6 +1,7 @@
-﻿using UnityEngine;
-using UnityEditor;
+﻿#if UNITY_EDITOR
+using UnityEngine;
 using System.IO;
+using UnityEditor;
 
 public class BoardDataManager : MonoBehaviour {
 	[SerializeField]
@@ -11,7 +12,6 @@ public class BoardDataManager : MonoBehaviour {
 	public int Area = 0;
 	public bool Tutorial = false;
 
-#if UNITY_EDITOR
 	//-------------------コマンド-------------------------//
 
 
@@ -122,5 +122,5 @@ public class BoardDataManager : MonoBehaviour {
 		}
 
 	}
-#endif
 }
+#endif
