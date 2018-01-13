@@ -16,6 +16,8 @@ public class BoardData : ScriptableObject {
 	//スイッチ
 	[SerializeField]
     public List< SwitchData > _switchs = new List< SwitchData >( );
+	[SerializeField]
+    public GameObject[ ] _boss;
 	
 	public void serchBoardObjects( ) {
 		Debug.Log( "Assetを更新しました" );
@@ -24,6 +26,7 @@ public class BoardData : ScriptableObject {
 		serchGoal( );
 		serchWall( );
 		serchSwitch( );
+		serchBoss( );
 	}
 
 	//------------------Serch-------------------//
@@ -81,6 +84,12 @@ public class BoardData : ScriptableObject {
 			addSwitch( obj );
 		}
 	}
+
+	void serchBoss( ) {
+		_switchs.Clear( );
+		string tag = Play.getTag( Play.BOARDOBJECT.SWITCH );
+		_boss = GameObject.FindGameObjectsWithTag( tag );
+	}
 	//-----------------/Serch-------------------//
 
 	//------------------Add---------------------//
@@ -127,6 +136,7 @@ public class BoardData : ScriptableObject {
 		_walls      = from._walls;
 		_wall_moves = from._wall_moves;
 		_switchs    = from._switchs;
+		_boss       = from._boss;
 	}
 	//-----Common----//
 	public static void copy( GameObject from, CommonData to ) {
@@ -262,6 +272,14 @@ public class BoardData : ScriptableObject {
 		for ( int i = 0; i < _switchs.Count; i++ ) {
 			result[ i ] = Instantiate( prefab );
 			copy( _switchs[ i ], result[ i ] );
+		}
+		return result;
+	}
+
+	public GameObject[ ] createBoss( ) {
+		GameObject[ ] result = new GameObject[ _boss.Length ];
+		for ( int i = 0; i < _boss.Length; i++ ) {
+			result[ i ] = Instantiate( _boss[ i ] );
 		}
 		return result;
 	}

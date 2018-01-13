@@ -10,6 +10,7 @@ public class Play : MonoBehaviour {
 		GOAL,
 		SWITCH,
 		WALL,
+		BOSS,
 	};
 	public enum STATE {
 		WAIT,
@@ -18,6 +19,17 @@ public class Play : MonoBehaviour {
 		GAME_OVER,
 		TUTORIAL
 	};
+	public enum EFFECT {
+		COL,
+		MAX
+	};
+
+	public enum SOUND {
+		BGM,
+		REF,
+		GOAL,
+		MAX
+	}
 	//--------Inspecter定数------//
 	[ Range( 0, 300 ) ]
 	public int START_WAIT_COUNT = 10;
@@ -33,17 +45,14 @@ public class Play : MonoBehaviour {
 	GameObject _clear_ui;
 	GameObject _faild_ui;
 	GameObject _area_txt_ui;
-	GameObject _col_effect;
+	GameObject[ ] _effect;
+	GameObject[ ] _sound;
+	BoardData data;
 	PlayData _data;
 	Action act;
 	int _count = 0;
 	public int area = -1;
 	int _stock = MAX_STOCK;
-	//Tutorial
-	//int _tutorial_phase = 0;
-	//int _tutorial_line = 0;
-	//List< string[ ] > _tutorial_txt = new List< string[ ] >( );
-	BoardData data;
 	
 
 
@@ -56,7 +65,8 @@ public class Play : MonoBehaviour {
 		setRetireButton( );
 		createLimitMoveWall( );
 		loadAreaData( );
-		loadColEffect( );
+		loadEffect( );
+		loadSound( );
 		findStockUI( );
 		findGameClearUI( );
 		findGameOverUI( );
@@ -105,6 +115,7 @@ public class Play : MonoBehaviour {
 			break;
 		case STATE.STAGE_CLEAR:
 			act = actONStageClear;
+			addSound( SOUND.GOAL );
 			_clear_ui.SetActive( true );
 			break;
 		case STATE.GAME_OVER:
@@ -237,6 +248,8 @@ public class Play : MonoBehaviour {
 		_data.walls = data.createWalls( );
 		//Switch
 		_data.switchs = data.createSwitchs( );
+		//Boss
+		_data.boss = data.createBoss( );
 		//Player
 		_data.player = data.createPlayer( );
 
@@ -262,6 +275,10 @@ public class Play : MonoBehaviour {
 			Destroy( obj );
 		}
 		//Switch
+		foreach ( GameObject obj in _data.switchs ) {
+			Destroy( obj );
+		}
+		//Boss
 		foreach ( GameObject obj in _data.switchs ) {
 			Destroy( obj );
 		}
@@ -296,10 +313,6 @@ public class Play : MonoBehaviour {
 			trans.position = Vector3.right * 640;
 			trans.localScale = Vector3.up * 1920 + Vector3.right * 200 + Vector3.forward * 1;
 		}
-	}
-
-	void loadColEffect( ) {
-		_col_effect = Instantiate( Resources.Load< GameObject >( "Play/Prefab/Effect/Col" ) );
 	}
 
 	void findStockUI( ) {	
@@ -351,6 +364,9 @@ public class Play : MonoBehaviour {
 		case BOARDOBJECT.WALL:
 			tag = "Wall";
 			break;
+		case BOARDOBJECT.BOSS:
+			tag = "Boss";
+			break;
 		}
 		return tag;
 	}
@@ -397,11 +413,28 @@ public class Play : MonoBehaviour {
 		return  getAssetTutorialDir( ) + "/" + area.ToString( ) + ".asset";
 	}
 	//-------------/Public static-------------------------//
-	//-----------------Effect-------------------------//
 
-	public void startEffect( Vector3 pos ) {
-		_col_effect.transform.position = pos;
-		_col_effect.GetComponent< ParticleSystem >( ).Play( );
+
+	//-----------------Effect&Sound-------------------------//
+	void loadEffect( ) {
+		_effect = new GameObject[ ( int )EFFECT.MAX ]; 
+		_effect[ ( int )EFFECT.COL ] = Instantiate( Resources.Load< GameObject >( "Play/Prefab/Effect/Col" ) );
+	}
+
+	void loadSound( ) {
+		_sound = new GameObject[ ( int )SOUND.MAX ];
+		_sound[ ( int )SOUND.BGM  ] = Instantiate( Resources.Load< GameObject >( "Play/Prefab/Sound/Bgm" ) );
+		_sound[ ( int )SOUND.REF  ] = Instantiate( Resources.Load< GameObject >( "Play/Prefab/Sound/Ref" ) );
+		_sound[ ( int )SOUND.GOAL ] = Instantiate( Resources.Load< GameObject >( "Play/Prefab/Sound/Goal" ) );
+	}
+
+	public void addEffect( EFFECT effect, Vector3 pos ) {
+		_effect[ ( int )effect ].transform.position = pos;
+		_effect[ ( int )effect ].GetComponent< ParticleSystem >( ).Play( );
+	}
+
+	public void addSound( SOUND sound ) {
+		_sound[ ( int )sound ].GetComponent< AudioSource >( ).Play( );
 	}
 
 

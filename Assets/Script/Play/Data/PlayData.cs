@@ -6,6 +6,7 @@ public class PlayData {
     public GameObject goal   { get; set; }
     public GameObject[ ] walls   { get; set; }
     public GameObject[ ] switchs { get; set; }
+    public GameObject[ ] boss    { get; set; }
 
 
 	public void setActives( bool value ) {
@@ -18,12 +19,16 @@ public class PlayData {
 			goal.SetActive( value );
 		}
 		//Wall
-		foreach ( GameObject component in walls ) {
-			component.SetActive( value );
+		foreach ( GameObject obj in walls ) {
+			obj.SetActive( value );
 		}
 		//Switch
-		foreach ( GameObject component in switchs ) {
-			component.SetActive( value );
+		foreach ( GameObject obj in switchs ) {
+			obj.SetActive( value );
+		}
+		//Boss
+		foreach ( GameObject obj in boss ) {
+			obj.SetActive( value );
 		}
 	}
 
@@ -37,12 +42,12 @@ public class PlayData {
 			goal.GetComponent< Goal >( ).reset( );
 		}
 		//Wall
-		foreach ( GameObject component in walls ) {
-			component.GetComponent< Wall >( ).reset( );
+		foreach ( GameObject obj in walls ) {
+			obj.GetComponent< Wall >( ).reset( );
 		}
 		//Switch
-		foreach ( GameObject component in switchs ) {
-			component.GetComponent< Switch >( ).reset( );
+		foreach ( GameObject obj in switchs ) {
+			obj.GetComponent< Switch >( ).reset( );
 		}
 	}
 }

@@ -70,7 +70,9 @@ public class Player : MonoBehaviour {
 		_col = true;
 		damage( );
 		//Effect
-		_play.startEffect( collision.contacts[ 0 ].point );
+		_play.addEffect( Play.EFFECT.COL, collision.contacts[ 0 ].point );
+		//Sound
+		_play.addSound( Play.SOUND.REF );
 	}
 
 

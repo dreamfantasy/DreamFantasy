@@ -18,5 +18,6 @@ MonoBehaviour:
     pos: {x: -300, y: 600, z: 0}
   _walls: []
   _wall_moves: []
-  _switchs:
-  - pos: {x: 100, y: -100, z: 0}
+  _switchs: []
+  _boss:
+  - {fileID: 0}
