@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 114010382980980242}
   - component: {fileID: 61095869576950598}
   m_Layer: 0
-  m_Name: WallMove
+  m_Name: WALLMOVE
   m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
