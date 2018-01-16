@@ -8,7 +8,7 @@ public class Title : MonoBehaviour {
 	public double ALPHA_SPEED = 0.03;
 	public int MOVIE_COUNT = 300;
 	//------------------//
-	public GameObject _movie;
+	//public GameObject _movie;
 	SpriteRenderer _touch;
 //	MovieTexture _movie_tex;
 	int _count = 0;

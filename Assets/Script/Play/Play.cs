@@ -73,6 +73,7 @@ public class Play : MonoBehaviour {
 	}
 
 	void Start( ) {
+        state = STATE.WAIT;
 		setState( STATE.WAIT );
 	}
 
@@ -100,7 +101,8 @@ public class Play : MonoBehaviour {
 			break;
 		}
 
-		state = value;
+        state = value;
+        Device.Instanse.StopLittle( 1 );
 		_count = 0;
 
 		switch ( state ) {

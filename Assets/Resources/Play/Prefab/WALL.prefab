@@ -20,10 +20,11 @@ GameObject:
   m_Component:
   - component: {fileID: 4997533759362538}
   - component: {fileID: 33035354331423376}
-  - component: {fileID: 64852121463383774}
   - component: {fileID: 23606412828311690}
+  - component: {fileID: 61327933581030778}
+  - component: {fileID: 114180901066121136}
   m_Layer: 0
-  m_Name: Quad
+  m_Name: Wall
   m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -80,17 +81,28 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1824482001398758}
   m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
---- !u!64 &64852121463383774
-MeshCollider:
+--- !u!61 &61327933581030778
+BoxCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1824482001398758}
+  m_Enabled: 1
+  m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_UsedByEffector: 0
+  m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Convex: 0
-  m_InflateMesh: 0
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+  m_Size: {x: 1, y: 1}
+--- !u!114 &114180901066121136
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1824482001398758}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0cfa0b5e5573a547b1ce749eb5a31f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

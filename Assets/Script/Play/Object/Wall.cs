@@ -10,7 +10,7 @@ public class Wall : MonoBehaviour {
 		//Layer
 		GetComponent< MeshRenderer >( ).sortingLayerName = "Default";
 		GetComponent< MeshRenderer >( ).sortingOrder = 3;
-		print( GetComponent< MeshRenderer >( ).sortingLayerName + ":" + GetComponent< MeshRenderer >( ).sortingOrder.ToString( ) );
+		//print( GetComponent< MeshRenderer >( ).sortingLayerName + ":" + GetComponent< MeshRenderer >( ).sortingOrder.ToString( ) );
 	}
 	public virtual void Start ( ) {
 	}

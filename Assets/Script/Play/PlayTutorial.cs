@@ -27,7 +27,7 @@ public class PlayTutorial : MonoBehaviour {
 	void Update( ) {
 		Play.STATE now_state = _play.state;
 		if ( _before_state != Play.STATE.PLAY &&
-			 _play.state   == Play.STATE.PLAY ) {
+            now_state   == Play.STATE.PLAY ) {
 			//プレイヤーがテキストボックス以外
 			//操作できないようにする
 			PlayLock( true );
@@ -37,7 +37,7 @@ public class PlayTutorial : MonoBehaviour {
 				PlayLock( false );
 			}
 		}
-		_before_state = _play.state;
+        _before_state = now_state;
 
 		//テキストを出さない場合は抜ける
 		if ( !_ui_box.activeSelf ) {
@@ -48,7 +48,8 @@ public class PlayTutorial : MonoBehaviour {
 		if ( Device.Instanse.Phase == Device.PHASE.ENDED ) {
 			if ( !readLine( ) ) {
 				PlayLock( false );
-			}
+            }
+            Device.Instanse.StopLittle( 3 );
 		}
 	}
 

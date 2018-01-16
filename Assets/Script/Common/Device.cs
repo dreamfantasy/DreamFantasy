@@ -23,7 +23,6 @@ public class Device : MonoBehaviour {
 
 	void Awake( ) {
 		Instanse = this;
-		StopLittle( 30 );
 		if ( isTouchDevice( ) ) {
 			checkPos = checkPosTouch;
 			checkTouchPhase = checkTouchPhaseTouch;
