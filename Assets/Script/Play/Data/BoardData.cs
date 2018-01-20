@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 [System.Serializable]
 public class BoardData : ScriptableObject {
 	public Sprite _bg;
@@ -87,8 +91,14 @@ public class BoardData : ScriptableObject {
 
 	void serchBoss( ) {
         _boss = null;
-		string tag = Play.getTag( Play.BOARDOBJECT.SWITCH );
+		string tag = Play.getTag( Play.BOARDOBJECT.BOSS );
 		_boss = GameObject.FindGameObjectsWithTag( tag );
+
+        #if UNITY_EDITOR
+        for ( int i = 0; i < _boss.Length; i++ ) {
+            _boss[ i ] = ( GameObject )PrefabUtility.GetPrefabObject( _boss[ i ] );
+        }
+        #endif
 	}
 	//-----------------/Serch-------------------//
 

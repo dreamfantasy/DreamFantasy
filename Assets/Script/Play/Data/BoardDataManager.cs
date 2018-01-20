@@ -82,6 +82,7 @@ public class BoardDataManager : MonoBehaviour {
 		Data.createGoal( );
 		Data.createWalls( );
 		Data.createSwitchs( );
+        Data.createBoss( );
 	}
 
 	void eraseGameObject( ) {
@@ -120,6 +121,13 @@ public class BoardDataManager : MonoBehaviour {
 				DestroyImmediate( obj );
 			}
 		}
+        {//Boss削除
+            string tag = Play.getTag( Play.BOARDOBJECT.BOSS );
+            GameObject obj = GameObject.FindGameObjectWithTag( tag );
+            if ( obj ) {
+                DestroyImmediate( obj );
+            }
+        }
 
 	}
 }
