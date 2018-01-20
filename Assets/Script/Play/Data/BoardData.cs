@@ -86,7 +86,7 @@ public class BoardData : ScriptableObject {
 	}
 
 	void serchBoss( ) {
-		_switchs.Clear( );
+        _boss = null;
 		string tag = Play.getTag( Play.BOARDOBJECT.SWITCH );
 		_boss = GameObject.FindGameObjectsWithTag( tag );
 	}
