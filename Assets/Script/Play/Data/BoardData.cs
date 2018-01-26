@@ -195,7 +195,10 @@ public class BoardData : ScriptableObject {
 		//Size
 		int texture_size = 256;
 		to.transform.localScale = from.size;
-		mat.SetTextureScale( "_MainTex", from.size / texture_size );
+		Vector2 texture_size2 = from.size / texture_size;
+		texture_size2.x = 1;
+
+		mat.SetTextureScale( "_MainTex", texture_size2 );
 
 		to.GetComponent< MeshRenderer >( ).material = mat;
 	}
@@ -264,6 +267,9 @@ public class BoardData : ScriptableObject {
 		//Wall
 		int idx = 0;
 		for ( int i = 0; i < _walls.Count; i++ ) {
+			if ( _walls[ i ] == null ) {
+				continue;
+			}
 			result[ idx ] = Instantiate( prefab );
 			copy( _walls[ i ], result[ i ] );
 			idx++;
@@ -271,6 +277,9 @@ public class BoardData : ScriptableObject {
 
 		//WallMove
 		for ( int i = 0; i < _wall_moves.Count; i++ ) {
+			if ( _wall_moves[ i ] == null ) {
+				continue;
+			}
 			result[ idx ] = Instantiate( prefab );
 			if ( Application.isPlaying ) {
 				Destroy( result[ idx ].GetComponent< Wall >( ) );
@@ -289,6 +298,9 @@ public class BoardData : ScriptableObject {
 		GameObject[ ] result = new GameObject[ _switchs.Count ];
 		GameObject prefab = Resources.Load< GameObject >( Play.getPrefabPath( Play.BOARDOBJECT.SWITCH ) );
 		for ( int i = 0; i < _switchs.Count; i++ ) {
+			if ( _switchs[ i ] == null ) {
+				continue;
+			}
 			result[ i ] = Instantiate( prefab );
 			copy( _switchs[ i ], result[ i ] );
 		}
@@ -298,6 +310,9 @@ public class BoardData : ScriptableObject {
 	public GameObject[ ] createBoss( ) {
 		GameObject[ ] result = new GameObject[ _boss.Length ];
 		for ( int i = 0; i < _boss.Length; i++ ) {
+			if ( _boss[ i ] == null ) {
+				continue;
+			}
 			result[ i ] = Instantiate( _boss[ i ] );
 		}
 		return result;
