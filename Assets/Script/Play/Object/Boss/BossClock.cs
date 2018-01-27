@@ -21,6 +21,7 @@ public class BossClock : Boss {
     Quaternion[ ] _target_times = new Quaternion[ ( int )NEEDLE.MAX ];
     int _length = 400;
     int _wait_count = 0;
+	bool _col = false;
 
 	STATE _state;
 
@@ -46,6 +47,7 @@ public class BossClock : Boss {
 
 	public override void reset( ) {
 		base.reset( );
+		_col = false;
 		_switchs[ 0 ].GetComponent< Switch >( ).reset( );
 		_switchs[ 1 ].GetComponent< Switch >( ).reset( );
 	}
@@ -73,6 +75,17 @@ public class BossClock : Boss {
         if ( _wait_count > WAIT_COUNT ) {
             setState( STATE.ROTATION );
         }
+		if ( !_col ) {
+			if ( _switchs[ 0 ].GetComponent< Switch >( ).enable ) {
+				_col = true;
+			}
+			if ( _switchs[ 1 ].GetComponent< Switch >( ).enable ) {
+				if ( _col ) {
+					_switchs[ 1 ].GetComponent< Switch >( ).reset( );
+				}
+				_col = true;
+			}
+		}
         _wait_count++;
     }
 
