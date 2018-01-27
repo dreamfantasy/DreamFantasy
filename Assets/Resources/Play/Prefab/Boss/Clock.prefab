@@ -20,6 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4625207372456200}
   - component: {fileID: 212635643572242294}
+  - component: {fileID: 114906103035781062}
   m_Layer: 0
   m_Name: Clock
   m_TagString: Boss
@@ -100,6 +101,17 @@ Transform:
   m_Father: {fileID: 4625207372456200}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+--- !u!114 &114906103035781062
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1108260865452800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf9f4eea209af0a4599962e992e711f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &212026451022146330
 SpriteRenderer:
   m_ObjectHideFlags: 1
