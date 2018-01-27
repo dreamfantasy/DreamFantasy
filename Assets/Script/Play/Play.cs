@@ -285,7 +285,7 @@ public class Play : MonoBehaviour {
 			Destroy( obj );
 		}
 		//Boss
-		foreach ( GameObject obj in _data.switchs ) {
+		foreach ( GameObject obj in _data.boss ) {
 			Destroy( obj );
 		}
 	}

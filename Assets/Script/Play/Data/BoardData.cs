@@ -90,13 +90,12 @@ public class BoardData : ScriptableObject {
 	}
 
 	void serchBoss( ) {
-        _boss = null;
 		string tag = Play.getTag( Play.BOARDOBJECT.BOSS );
 		_boss = GameObject.FindGameObjectsWithTag( tag );
-
         #if UNITY_EDITOR
         for ( int i = 0; i < _boss.Length; i++ ) {
-            _boss[ i ] = ( GameObject )PrefabUtility.GetPrefabObject( _boss[ i ] );
+            _boss[ i ] = ( GameObject )PrefabUtility.GetPrefabParent( _boss[ i ] );
+            Debug.Log( _boss[ i ] );
         }
         #endif
 	}

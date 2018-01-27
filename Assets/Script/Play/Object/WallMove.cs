@@ -55,6 +55,7 @@ public class WallMove : Wall {
 		if ( reversed ) {
 			option.vec *= -1;
 		}
+        reversed = false;
 	}
 
 
