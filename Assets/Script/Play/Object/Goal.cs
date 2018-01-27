@@ -7,16 +7,13 @@ public class Goal : MonoBehaviour {
 	Color color_off = new Color( 1.0f, 1.0f, 1.0f, 0.3f );
 
 	void Awake( ) {
+		setEnable( false );
 		addCollider( );
 	}
 
 	void Start( ) {
+		serchSwitch( );
 		EnterPlayer = false;
-		GameObject[ ] objects = GameObject.FindGameObjectsWithTag( Play.getTag( Play.BOARDOBJECT.SWITCH ) );
-		switchs = new Switch[ objects.Length ];
-		for ( int i = 0; i < objects.Length; i++ ) {
-			switchs[ i ] = objects[ i ].GetComponent< Switch >( );
-		}
 	}
 
 	void Update( ) {
@@ -74,5 +71,13 @@ public class Goal : MonoBehaviour {
 
 	public void reset( ) {
 		EnterPlayer = false;
+	}
+
+	void serchSwitch( ) {
+		GameObject[ ] objects = GameObject.FindGameObjectsWithTag( Play.getTag( Play.BOARDOBJECT.SWITCH ) );
+		switchs = new Switch[ objects.Length ];
+		for ( int i = 0; i < objects.Length; i++ ) {
+			switchs[ i ] = objects[ i ].GetComponent< Switch >( );
+		}
 	}
 }
