@@ -18,9 +18,9 @@ public class WallMove : Wall {
 
 	public override void Awake( ) {
 		base.Awake( );
-		Rigidbody2D rd = gameObject.AddComponent< Rigidbody2D >( );
-		rd.freezeRotation = true;
-		rd.gravityScale = 0.0f;
+		//Rigidbody2D rd = gameObject.AddComponent< Rigidbody2D >( );
+		//rd.freezeRotation = true;
+		//rd.gravityScale = 0.0f;
 		gameObject.isStatic = false;
 	}
 	
@@ -59,12 +59,13 @@ public class WallMove : Wall {
 
 
     void checkReverseTime( ) {
-        if ( option.vec.x > option.vec.y ) {
+        if ( Mathf.Abs( option.vec.x ) > Mathf.Abs( option.vec.y ) ) {
             //横移動
-            _reverse_time = ( int )( option.move_range / option.vec.x );
+            _reverse_time = ( int )( option.move_range / Mathf.Abs( option.vec.x ) );
         } else {
-            _reverse_time = ( int )( option.move_range / option.vec.y );
+            _reverse_time = ( int )( option.move_range / Mathf.Abs( option.vec.y ) );
         }
+        //Debug.Log( "reversetime" + _reverse_time );
     }
 }
    
