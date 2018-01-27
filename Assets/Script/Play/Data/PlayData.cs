@@ -49,5 +49,9 @@ public class PlayData {
 		foreach ( GameObject obj in switchs ) {
 			obj.GetComponent< Switch >( ).reset( );
 		}
+		//boss
+		foreach ( GameObject obj in boss ) {
+			obj.GetComponent< Boss >( ).reset( );
+		}
 	}
 }

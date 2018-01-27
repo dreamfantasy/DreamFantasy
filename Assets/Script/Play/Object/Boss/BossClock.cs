@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BossClock : MonoBehaviour {
+public class BossClock : Boss {
 	enum STATE {
 		WAIT,
 		ROTATION,
@@ -16,18 +16,15 @@ public class BossClock : MonoBehaviour {
 	const float MAX_ROT_SPEED = 5 * Mathf.PI * 2 / 360;//度数法
     const int WAIT_COUNT = 200;
 
-	GameObject[ ] _needles = new GameObject[ ( int )NEEDLE.MAX ];
-	GameObject[ ] _switchs = new GameObject[ ( int )NEEDLE.MAX ];
-    int[ ] _length;
+	GameObject[ ] _needles      = new GameObject[ ( int )NEEDLE.MAX ];
+	GameObject[ ] _switchs      = new GameObject[ ( int )NEEDLE.MAX ];
     Quaternion[ ] _target_times = new Quaternion[ ( int )NEEDLE.MAX ];
+    int _length = 400;
     int _wait_count = 0;
 
 	STATE _state;
 
 	void Awake( ) {
-        _length = new int[ ( int )NEEDLE.MAX ];
-        _length[ ( int )NEEDLE.SHORT ] = 300;
-        _length[ ( int )NEEDLE.LONG ] = 400;
 		loadSwitchs( );
 		serchNeedles( );
 	}
@@ -45,6 +42,12 @@ public class BossClock : MonoBehaviour {
             rotation( );
             break;
         }
+	}
+
+	public override void reset( ) {
+		base.reset( );
+		_switchs[ 0 ].GetComponent< Switch >( ).reset( );
+		_switchs[ 1 ].GetComponent< Switch >( ).reset( );
 	}
 
     void setState( STATE state ) {
@@ -88,7 +91,6 @@ public class BossClock : MonoBehaviour {
             Vector3 dir = _needles[ i ].transform.rotation.eulerAngles;
             Vector3 target_dir = _target_times[ i ].eulerAngles;
             float angle = Quaternion.Angle( _needles[ i ].transform.rotation, _target_times[ i ] );
-			//angle = Mathf.PI * 2 * 360 / angle;
             //回転速度調整
             bool rot_flag2 = false;
 			if ( angle > MAX_ROT_SPEED ) {
@@ -100,18 +102,10 @@ public class BossClock : MonoBehaviour {
                 rot_flag2 = true;
 			}
 
-            //if ( angle < 0 ) {
-             //   angle = Mathf.PI * 2 + angle;
-            //}
-
             if ( rot_flag2 ) {
                 rot_flag = true;
-                //回転ベクトル
-                //dir.z += angle;
                 //回転
-                //Quaternion rot = _needles[ i ].transform.rotation;
                 Quaternion rot = _needles[ i ].transform.rotation * Quaternion.AngleAxis( angle * 360 / ( 2 * Mathf.PI ), Vector3.back );
-                //rot.eulerAngles = dir;
                 _needles[ i ].transform.rotation = rot;
             } else {
                 _needles[ i ].transform.rotation = _target_times[ i ];
@@ -135,14 +129,14 @@ public class BossClock : MonoBehaviour {
 	}
 
 	void serchNeedles( ) {
-		_needles[ 0 ] = transform.Find( "Long" ).gameObject;
+		_needles[ 0 ] = transform.Find( "Long"  ).gameObject;
 		_needles[ 1 ] = transform.Find( "Short" ).gameObject;
 	}
 
     void setSwitchPos( ) {
         for ( int i = 0; i < ( int )NEEDLE.MAX; i++ ) {
             //針の角度
-            _switchs[ i ].transform.position = _target_times[ i ] * Vector3.up * _length[ i ];
+            _switchs[ i ].transform.position = _target_times[ i ] * Vector3.up * _length;
         }
     }
 }
