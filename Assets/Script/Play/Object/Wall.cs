@@ -2,7 +2,7 @@
 
 #if UNITY_EDITOR
 using UnityEditor;
-[ExecuteInEditMode]
+//[ExecuteInEditMode]
 #endif
 public class Wall : MonoBehaviour {
 	public virtual void Awake( ) {

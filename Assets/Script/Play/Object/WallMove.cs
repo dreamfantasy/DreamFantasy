@@ -6,13 +6,13 @@ public class WallMove : Wall {
 	[System.Serializable]
 	public class Option {
 		public Vector2 vec;
-		public int reverse_time;
+		public int move_range;
 	};
 	[SerializeField]
 	public Option option;
 	
 	int _count = 0;
-	bool _col = false;
+    int _reverse_time;
 	bool reversed = false;
 	Vector3 _start_pos;
 
@@ -25,29 +25,21 @@ public class WallMove : Wall {
 	}
 	
 	public override void Start( ) {
-		base.Start( );
+        base.Start( );
+        checkReverseTime( );
 		_start_pos = transform.position;
 	}
 
 	public override void Update( ) {
 		base.Update( );
-		_count = ( _count + 1 ) % option.reverse_time;
+        transform.position = transform.position + ( Vector3 )option.vec;
+        if ( _reverse_time <= 0 ) {
+            return;
+        }
+        _count = ( _count + 1 ) % _reverse_time;
 		if ( _count == 0 ) {
 			reverse( );
 		}
-		transform.position = transform.position + ( Vector3 )option.vec;
-		_col = false;
-	}
-
-	void OnCollisionEnter2D( Collision2D collision ) {
-		if ( collision.collider.gameObject.tag == "Player" ) {
-			return;
-		}
-		if ( _col ) {
-			return;
-		}
-		_col = true;
-		reverse( );
 	}
 
 	void reverse( ) {
@@ -64,5 +56,15 @@ public class WallMove : Wall {
 			option.vec *= -1;
 		}
 	}
+
+
+    void checkReverseTime( ) {
+        if ( option.vec.x > option.vec.y ) {
+            //横移動
+            _reverse_time = ( int )( option.move_range / option.vec.x );
+        } else {
+            _reverse_time = ( int )( option.move_range / option.vec.y );
+        }
+    }
 }
    

@@ -221,6 +221,9 @@ public class BoardData : ScriptableObject {
 	}
 	public static void copy( WallMoveData from, GameObject to ) {
 		copy( ( WallData )from, to );
+        if ( from.option == null ) {
+            return;
+        }
 		to.GetComponent< WallMove >( ).option = from.option;
 	}
 	//-----/Wall-----//
@@ -286,7 +289,7 @@ public class BoardData : ScriptableObject {
 			} else {
 				DestroyImmediate( result[ idx ].GetComponent< Wall >( ) );
 			}
-			result[ i ].AddComponent< WallMove >( );
+			result[ idx ].AddComponent< WallMove >( );
 			copy( _wall_moves[ i ], result[ idx ] );
 			idx++;
 		}
