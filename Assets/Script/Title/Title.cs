@@ -8,9 +8,8 @@ public class Title : MonoBehaviour {
 	public double ALPHA_SPEED = 0.03;
 	public int MOVIE_COUNT = 300;
 	//------------------//
-	//public GameObject _movie;
+	GameObject _bgm;
 	SpriteRenderer _touch;
-//	MovieTexture _movie_tex;
 	int _count = 0;
 
 	void Awake( ) {
@@ -19,60 +18,31 @@ public class Title : MonoBehaviour {
 			print( "eroor:touch is null" );
 			Application.Quit( );
 		}
-		//_movie_tex = _movie.GetComponent< MeshRenderer >( ).material.mainTexture as MovieTexture;
-		//if ( !_movie_tex ) {
-		//	print( "eroor:movie_tex is null" );
-		//	Application.Quit( );
-		//}
+		_bgm = Instantiate( Resources.Load< GameObject >( "Title/Prefab/Sound/Bgm" ) );
 	}
 
 	void Start( ) {
 	}
 
 	void Update( ) {
-		float alpha = ( float )Math.Abs( Math.Sin( _count * ALPHA_SPEED ) );
-		_touch.color = new Color( 1, 1, 1, alpha );
+		checkGoNextScene( );
+		updateColor( );
+		_count++;
+	}
 
-//		if ( false /*_movie_tex != null && _movie_tex.isPlaying */ ) {
-			//タッチで動画を止める
-			//if ( Device.Instanse.Phase == Device.PHASE.ENDED ) {
-			//	stopMovie( );
-			//}
-	//	} else {
-			//一定時間放置でムービー再生
-			//if ( _count > MOVIE_COUNT ) {
-			//	playMovie( );
-			//}
-			//タッチで次のシーン
-			if ( Device.Instanse.Phase == Device.PHASE.ENDED ) {
-				if ( Game.Instance.tutorial ) {
-					Game.Instance.loadScene( Game.SCENE.SCENE_SCENARIO );
-				} else {
-					Game.Instance.loadScene( Game.SCENE.SCENE_STAGESELECT );
-				}
+	void updateColor( ) {
+		_touch.color = new Color( 1, 1, 1, ( float )Math.Abs( Math.Sin( _count * ALPHA_SPEED ) ) );
+	}
+
+	void checkGoNextScene( ) {
+		//タッチで次のシーン
+		if ( Device.Instanse.Phase == Device.PHASE.ENDED ) {
+			_bgm.GetComponent< AudioSource >( ).Stop( );
+			if ( Game.Instance.tutorial ) {
+				Game.Instance.loadScene( Game.SCENE.SCENE_SCENARIO );
+			} else {
+				Game.Instance.loadScene( Game.SCENE.SCENE_STAGESELECT );
 			}
-		//}
-		//_count++;
-	}
-
-	void playMovie( ) {
-		/*
-		if ( _movie_tex == null ) {
-			return;
-		}
-		_movie.SetActive( true );
-		_movie_tex.Play( );
-		*/
-	}
-
-	void stopMovie( ) {
-		/*
-		if ( _movie_tex == null ) {
-			return;
-		}
-		_count = 0;
-		_movie_tex.Stop( );
-		_movie.SetActive( false );
-		*/
+		} 
 	}
 }
