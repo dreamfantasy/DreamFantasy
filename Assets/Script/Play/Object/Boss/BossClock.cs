@@ -27,7 +27,7 @@ public class BossClock : Boss {
 
 	void Awake( ) {
 		loadSwitchs( );
-		serchNeedles( );
+		loadNeedles( );
 	}
 	
 	void Start( ) {
@@ -141,9 +141,15 @@ public class BossClock : Boss {
 		_switchs[ 1 ] = Instantiate( prefab );
 	}
 
-	void serchNeedles( ) {
-		_needles[ 0 ] = transform.Find( "Long"  ).gameObject;
-		_needles[ 1 ] = transform.Find( "Short" ).gameObject;
+	void loadNeedles( ) {
+        string path0 = "Play/Prefab/Boss/ClockLong";
+        string path1 = "Play/Prefab/Boss/ClockShort";
+        GameObject prefab0 = Resources.Load< GameObject >( path0 );
+        GameObject prefab1 = Resources.Load< GameObject >( path1 );
+        _needles[ 0 ] = Instantiate( prefab0 );
+        _needles[ 1 ] = Instantiate( prefab1 );
+        _needles[ 0 ].transform.parent = gameObject.transform;
+        _needles[ 1 ].transform.parent = gameObject.transform;
 	}
 
     void setSwitchPos( ) {
@@ -151,5 +157,10 @@ public class BossClock : Boss {
             //針の角度
             _switchs[ i ].transform.position = _target_times[ i ] * Vector3.up * _length;
         }
+    }
+
+    public override void erase( ) {
+        Destroy( _needles[ 0 ] );
+        Destroy( _needles[ 0 ] );
     }
 }

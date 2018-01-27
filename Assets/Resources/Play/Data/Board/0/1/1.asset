@@ -23,14 +23,14 @@ MonoBehaviour:
     size: {x: 170, y: 500}
     texture: {fileID: 0}
     option:
-      vec: {x: 0, y: -2}
-      move_range: 100
+      vec: {x: 0, y: 10}
+      move_range: 800
   - pos: {x: 290, y: 500, z: -2}
     rot: {x: 0, y: -0, z: 0.7071068, w: -0.7071068}
     size: {x: 170, y: 500}
     texture: {fileID: 0}
     option:
-      vec: {x: 0, y: 2}
-      move_range: 100
+      vec: {x: 0, y: -10}
+      move_range: 800
   _switchs: []
   _boss: []
