@@ -315,7 +315,11 @@ public class BoardData : ScriptableObject {
 			if ( _boss[ i ] == null ) {
 				continue;
 			}
+            #if UNITY_EDITOR
+            result[ i ] = ( GameObject )PrefabUtility.InstantiatePrefab( _boss[ i ] );
+            #else
 			result[ i ] = Instantiate( _boss[ i ] );
+            #endif
 		}
 		return result;
 	}
