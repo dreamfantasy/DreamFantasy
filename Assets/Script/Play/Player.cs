@@ -89,7 +89,8 @@ public class Player : MonoBehaviour {
 		_line = Resources.Load( Play.getPrefabDir( ) + "/Other/Line" ) as GameObject;
 		_line = Instantiate( _line );
 		_line.transform.parent = gameObject.transform;
-		_line.transform.position = Vector3.zero;
+		_line.transform.position = Vector3.back * 2;
+		_line.transform.localScale = Vector3.forward + Vector3.right + Vector3.up * 1000;
 		_line.SetActive( false );
 	}
 
