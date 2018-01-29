@@ -20,11 +20,13 @@ public class StageSelect : MonoBehaviour {
 	Color color_button_on  = new Color( 1, 1, 1 );
 	Vector3 chara_defalt_pos;
 	static int _target = 0;
+	int _next_count = 0;
 	int _count { get; set; }
 	bool _select { get; set; }
 
 	const float FLOATING_SPEED = 0.01f;
 	const float FLOATING_RANGE = 20.0f;
+	const int NEXT_WAIT_COUNT = 60;
 
 	void Awake( ) {
 		loadSound( );
@@ -52,9 +54,11 @@ public class StageSelect : MonoBehaviour {
 	}
 
 	void Update( ) {
-		if ( _select &&
-			 !isPlayingSound( SOUND.SELECT ) ) {
-			Game.Instance.loadScene( Game.SCENE.SCENE_SCENARIO );
+		if ( _select ) {
+			_next_count++;
+			if ( _next_count > NEXT_WAIT_COUNT ) {
+				Game.Instance.loadScene( Game.SCENE.SCENE_SCENARIO );
+			}
 		}
 
 		Vector3 add = Vector3.up * ( float )Math.Abs( Math.Sin( _count * FLOATING_SPEED ) ) * FLOATING_RANGE;
@@ -78,6 +82,7 @@ public class StageSelect : MonoBehaviour {
 		}
 		addSound( SOUND.SELECT );
 		_select = true;
+		_next_count = 0;
 		Game.Instance.stage = stage;
 	}
 

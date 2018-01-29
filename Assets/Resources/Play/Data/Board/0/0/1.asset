@@ -17,17 +17,17 @@ MonoBehaviour:
   _goal:
     pos: {x: -150, y: 0, z: 0}
   _walls:
-  - pos: {x: -270, y: -210, z: 0}
+  - pos: {x: -270, y: -210, z: -2}
     rot: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
     size: {x: 170, y: 540}
     texture: {fileID: 2800000, guid: 2d97921f107264a4198b11d2f44a5d0f, type: 3}
-  - pos: {x: -80, y: 210, z: 0}
+  - pos: {x: -80, y: 200, z: -2}
     rot: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-    size: {x: 170, y: 150}
+    size: {x: 180, y: 150}
     texture: {fileID: 2800000, guid: 2d97921f107264a4198b11d2f44a5d0f, type: 3}
-  - pos: {x: 80, y: 90, z: 0}
+  - pos: {x: 80, y: 80, z: -2}
     rot: {x: 0, y: 0, z: 0, w: 1}
-    size: {x: 170, y: 420}
+    size: {x: 180, y: 420}
     texture: {fileID: 2800000, guid: 2d97921f107264a4198b11d2f44a5d0f, type: 3}
   _wall_moves: []
   _switchs: []
