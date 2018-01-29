@@ -71,6 +71,7 @@ public class Goal : MonoBehaviour {
 
 	public void reset( ) {
 		EnterPlayer = false;
+		setEnable( false );
 	}
 
 	void serchSwitch( ) {
