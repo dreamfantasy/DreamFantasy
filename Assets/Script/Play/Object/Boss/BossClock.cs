@@ -162,5 +162,7 @@ public class BossClock : Boss {
     public override void erase( ) {
         Destroy( _needles[ 0 ] );
         Destroy( _needles[ 1 ] );
+        Destroy( _switchs[ 0 ] );
+        Destroy( _switchs[ 1 ] );
     }
 }

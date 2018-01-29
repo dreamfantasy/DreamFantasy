@@ -286,6 +286,7 @@ public class Play : MonoBehaviour {
 		}
 		//Boss
 		foreach ( GameObject obj in _data.boss ) {
+			obj.GetComponent< Boss >( ).erase( );
 			Destroy( obj );
 		}
 	}
